@@ -1,0 +1,8 @@
+{
+  "name": "Habesha Gourmet Bistro",
+  "description": "ሀበሻ ሬስቶራንት እና ባር - የባህል ምግቦች እና መጠጦች ሜኑ",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

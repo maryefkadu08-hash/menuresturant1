@@ -6,11 +6,173 @@ const STORAGE_KEYS = {
   customerOrder: "customer-order",
   incomingOrders: "incoming_orders",
   menu: "restaurant-menu",
+  language: "restaurant-language",
 };
 
 const ADMIN_PASSWORD = "AdminPass2026";
 const telegramUser = "miki7589";
-const FALLBACK_IMAGE = "foodimage/images.jpg";
+
+const TRANSLATIONS = {
+  am: {
+    appTitle: "ሀበሻ ሬስቶራንት እና ባር",
+    appSubtitle: "የተመረጡ የባህል ምግቦች እና መጠጦች",
+    promoBanner: "🎓 ተማሪ ቅናሽ! STUDENT10 በመጠቀም 10% ቅናሽ ያገኛሉ",
+    callUs: "📞 ይደውሉ",
+    locationMap: "📍 የአድራሻ ካርታ",
+    adminBtn: "🔒 Admin",
+    langToggleLabel: "🌐 English",
+    themeDark: "🌙 Dark",
+    themeLight: "☀️ Light",
+    searchPlaceholder: "ምግብ ፈልግ...",
+    catAll: "ሁሉም",
+    catFasting: "የፆም",
+    catNonFasting: "የፍስክ",
+    catBeverage: "መጠጦች",
+    reviewsTitle: "የህዝብ ግምገማዎች",
+    yourOrder: "የእርስዎ ትዕዛዝ",
+    noActiveOrder: "ምንም ንቁ ትዕዛዝ የለም። ከመን ላይ ያሉ ምግቦችን ይጨምሩ።",
+    cartEmpty: "የእርስዎ ትዕዛዝ ባዶ ነው።",
+    total: "ጠቅላላ",
+    discountedTotal: "የተቀነሰ ጠቅላላ",
+    checkoutBtn: "በትዕዛዝ ይቀጥሉ",
+    inStock: "ቀሪ",
+    outOfStock: "አልቋል",
+    fastPrep: "በፍጥነት የሚደርስ",
+    addBtn: "አክል",
+    outOfStockBtn: "የተሸጠ",
+    currency: "ብር",
+    promoCodeLabel: "ፕሮሞ ኮድ",
+    promoHint: "10% ቅናሽ ለማግኘት STUDENT10 ያስገቡ",
+    invalidPromo: "የተሳሳተ ፕሮሞ ኮድ",
+    promoSuccess: "10% ቅናሽ ተተግብሯል",
+    delete: "ሰርዝ",
+    itemAdded: "እቃ ወደ ቅርጫት ተጨምሯል!",
+    cartAdjusted: "የእቃዎች ብዛት ለተገኘው መጠን ተ አስተካክሏል",
+    closeAdmin: "✕ Close Admin",
+    adminDashboardTitle: "Admin Analytics Dashboard",
+    adminDashboardDesc: "የዕቃዎች ቁጥጥር፣ ትዕዛዞች፣ ግምገማዎች እና አጠቃላይ ገቢ በአንድ ቦታ።",
+    activeVisitors: "ንቁ ጎብኚዎች",
+    totalRevenue: "አጠቃላይ ገቢ",
+    totalCost: "አጠቃላይ ወጪ",
+    netProfit: "የተጣራ ትርፍ",
+    profitMargin: "የትርፍ ህዳግ",
+    inventoryMgmt: "የዕቃዎች ቁጥጥር",
+    orderMgmt: "የትዕዛዝ ቁጥጥር",
+    incomingOrders: "አዲስ ትዕዛዞች",
+    topSelling: "በብዛት የተሸጡ",
+    leastSelling: "በአነስተኛ የተሸጡ",
+    reviewModeration: "የግምገማዎች ቁጥጥር",
+    adminLoginTitle: "የአድሚን መግቢያ",
+    adminLoginDesc: "ዳሽቦርዱን ለመክፈት የምስጢር ቁጥር ያስገቡ።",
+    passcodeLabel: "የምስጢር ቁጥር",
+    unlockDashboard: "ዳሽቦርዱን ክፈት",
+    checkoutTitle: "ትዕዛዝ ማጠናቀቂያ",
+    fullName: "ስም",
+    phoneNumber: "ስልክ",
+    tableOrAddress: "ሰሌዳ / የማድረሻ አድራሻ",
+    sendTelegramBtn: "በትሌግራም እዘዝ",
+    cancel: "ሰርዝ",
+    addReviewTitle: "ግምገማ ይጻፉ",
+    yourName: "ስም",
+    yourComment: "አስተያየትዎት",
+    saveReview: "አስተያየት ላክ",
+    noReviewsYet: "ምንም ግምገማዎች የሉም",
+    noSalesYet: "ምንም ሽያጭ የለም",
+    noIncomingOrders: "ምንም አዲስ ትዕዛዝ የለም",
+    noReviews: "ግምገማ የለም",
+    statusPending: "በመጠባበቅ ላይ",
+    statusPreparing: "በዝግጅት ላይ",
+    statusReady: "ዝግጁ ነው",
+    statusCompleted: "ተጠናቋል",
+  },
+  en: {
+    appTitle: "Habesha Restaurant & Bar",
+    appSubtitle: "Selected Traditional Foods and Beverages",
+    promoBanner: "🎓 Student Discount! Use STUDENT10 for 10% off",
+    callUs: "📞 Call Us",
+    locationMap: "📍 Location Map",
+    adminBtn: "🔒 Admin",
+    langToggleLabel: "🌐 አማርኛ",
+    themeDark: "🌙 Dark",
+    themeLight: "☀️ Light",
+    searchPlaceholder: "Search food...",
+    catAll: "All",
+    catFasting: "Fasting",
+    catNonFasting: "Non-Fasting",
+    catBeverage: "Drinks",
+    reviewsTitle: "Customer Reviews",
+    yourOrder: "Your Order",
+    noActiveOrder: "No active order. Add food items from the menu.",
+    cartEmpty: "Your cart is empty.",
+    total: "Total",
+    discountedTotal: "Discounted Total",
+    checkoutBtn: "Proceed to Checkout",
+    inStock: "left",
+    outOfStock: "Out of stock",
+    fastPrep: "Fast prep",
+    addBtn: "Add",
+    outOfStockBtn: "Sold Out",
+    currency: "ETB",
+    promoCodeLabel: "Promo Code",
+    promoHint: "Enter STUDENT10 for 10% off",
+    invalidPromo: "Invalid promo code",
+    promoSuccess: "10% discount applied",
+    delete: "Delete",
+    itemAdded: "Item added to cart!",
+    cartAdjusted: "Cart quantities adjusted for current stock.",
+    closeAdmin: "✕ Close Admin",
+    adminDashboardTitle: "Admin Analytics Dashboard",
+    adminDashboardDesc: "Inventory, orders, reviews, and profitability in one secure control panel.",
+    activeVisitors: "Active Visitors",
+    totalRevenue: "Total Revenue",
+    totalCost: "Total Cost",
+    netProfit: "Net Profit",
+    profitMargin: "Profit Margin",
+    inventoryMgmt: "Inventory Management",
+    orderMgmt: "Order Management",
+    incomingOrders: "Incoming Orders",
+    topSelling: "Top Selling Items",
+    leastSelling: "Least Selling Items",
+    reviewModeration: "Review Moderation",
+    adminLoginTitle: "Admin Login",
+    adminLoginDesc: "Enter the secure admin passcode to access analytics and order controls.",
+    passcodeLabel: "Passcode",
+    unlockDashboard: "Unlock Dashboard",
+    checkoutTitle: "Checkout Order",
+    fullName: "Full Name",
+    phoneNumber: "Phone Number",
+    tableOrAddress: "Table No / Delivery Address",
+    sendTelegramBtn: "Order via Telegram",
+    cancel: "Cancel",
+    addReviewTitle: "Write a Review",
+    yourName: "Name",
+    yourComment: "Your Comment",
+    saveReview: "Save Review",
+    noReviewsYet: "No approved reviews yet.",
+    noSalesYet: "No sales yet.",
+    noIncomingOrders: "No incoming orders.",
+    noReviews: "No reviews",
+    statusPending: "Pending",
+    statusPreparing: "Preparing",
+    statusReady: "Ready",
+    statusCompleted: "Completed",
+  },
+};
+
+const ITEM_TRANSLATIONS = {
+  "በያይነቱ": { name: "Beyaynetu", category: "Fasting" },
+  "ሽሮ ላላ": { name: "Shiro Lala", category: "Fasting" },
+  "ሽሮ ፈሰስ": { name: "Shiro Feses", category: "Fasting" },
+  "ፓስታ በአትክልት": { name: "Veggie Pasta", category: "Fasting" },
+  "ክክ አልጫ": { name: "Kik Alicha", category: "Fasting" },
+  "ዶሮ ወጥ": { name: "Doro Wat", category: "Non-Fasting" },
+  "ክትፎ": { name: "Kitfo", category: "Non-Fasting" },
+  "ልዩ ጥብስ": { name: "Special Tibs", category: "Non-Fasting" },
+  "ዳሽን ቢራ": { name: "Dashen Beer", category: "Drinks" },
+  "ጠጅ (በብርሌ)": { name: "Tej", category: "Drinks" },
+  "የቤት አረቄ (ሾት)": { name: "Home Areke", category: "Drinks" },
+};
+
 const defaultMenuItems = [
   {
     id: 1,
@@ -122,36 +284,6 @@ const defaultMenuItems = [
     prepEstimate: 2,
     img: "image/ar.jpeg",
   },
-  {
-    id: 14,
-    name: "juce",
-    category: "መጠጥ",
-    price: 80,
-    costPrice: 45,
-    stock: 10,
-    prepEstimate: 5,
-    img: "image/juce.jpg",
-  },
-  {
-    id: 15,
-    name: "coca",
-    category: "መጠጥ",
-    price: 60,
-    costPrice: 35,
-    stock: 12,
-    prepEstimate: 4,
-    img: "image/coca.jpeg",
-  },
-  {
-    id: 16,
-    name: "avocado",
-    category: "መጠጥ",
-    price: 70,
-    costPrice: 40,
-    stock: 8,
-    prepEstimate: 6,
-    img: "image/avocado.jpeg",
-  },
 ];
 
 let menuItems = loadMenuItems();
@@ -169,60 +301,89 @@ let countdownStartedAt = null;
 let activeOrderId = null;
 let activeUsers = getRandomInt(12, 40);
 
-function resolveMenuImage(imagePath) {
-  const normalized = typeof imagePath === "string" ? imagePath.trim() : "";
-  if (!normalized) return FALLBACK_IMAGE;
-
-  if (normalized.startsWith("http://") || normalized.startsWith("https://")) {
-    return normalized;
-  }
-
-  return normalized.includes("/") || normalized.includes("\\")
-    ? normalized
-    : `${FALLBACK_IMAGE}`;
+function getCurrentLang() {
+  return localStorage.getItem(STORAGE_KEYS.language) || "am";
 }
 
-function normalizeMenuItems(items) {
-  if (!Array.isArray(items)) {
-    return defaultMenuItems.map((item) => ({
-      ...item,
-      img: resolveMenuImage(item.img),
-    }));
-  }
+function setLanguage(lang) {
+  localStorage.setItem(STORAGE_KEYS.language, lang);
+  document.documentElement.lang = lang;
+  applyLanguageUI();
+}
 
-  const merged = defaultMenuItems.map((defaultItem) => {
-    const savedItem = items.find((item) => item.id === defaultItem.id) || {};
-    return {
-      ...defaultItem,
-      ...savedItem,
-      id: defaultItem.id,
-      img: resolveMenuImage(savedItem.img || defaultItem.img),
+function toggleLanguage() {
+  const current = getCurrentLang();
+  const next = current === "am" ? "en" : "am";
+  setLanguage(next);
+}
+
+function getTranslatedItemName(originalName) {
+  const lang = getCurrentLang();
+  if (lang === "en" && ITEM_TRANSLATIONS[originalName]) {
+    return ITEM_TRANSLATIONS[originalName].name;
+  }
+  return originalName;
+}
+
+function getTranslatedCategory(originalCategory) {
+  const lang = getCurrentLang();
+  if (lang === "en") {
+    const map = {
+      "የፆም": "Fasting",
+      "የፍስክ": "Non-Fasting",
+      "መጠጥ": "Drinks",
+      "All": "All",
     };
+    return map[originalCategory] || originalCategory;
+  }
+  return originalCategory;
+}
+
+function applyLanguageUI() {
+  const lang = getCurrentLang();
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.am;
+
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.dataset.i18n;
+    if (t[key]) {
+      el.textContent = t[key];
+    }
   });
 
-  const extraItems = items
-    .filter(
-      (item) =>
-        !defaultMenuItems.some((defaultItem) => defaultItem.id === item.id),
-    )
-    .map((item) => ({
-      ...item,
-      img: resolveMenuImage(item.img),
-    }));
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+    const key = el.dataset.i18nPlaceholder;
+    if (t[key]) {
+      el.placeholder = t[key];
+    }
+  });
 
-  return [...merged, ...extraItems];
+  const langToggleBtn = document.getElementById("lang-toggle");
+  if (langToggleBtn) {
+    langToggleBtn.textContent = t.langToggleLabel;
+  }
+
+  const currentTheme = document.body.getAttribute("data-theme") || "light";
+  const themeBtn = document.getElementById("theme-toggle");
+  if (themeBtn) {
+    themeBtn.textContent = currentTheme === "dark" ? t.themeLight : t.themeDark;
+  }
+
+  renderMenu(getFilteredItems());
+  renderCart();
+  renderPublicReviews();
+  renderOrdersSidebar();
+  const adminPanel = document.getElementById("admin-panel");
+  if (adminPanel && !adminPanel.classList.contains("hidden")) {
+    updateAdminPanel();
+  }
 }
 
 function loadMenuItems() {
   try {
     const saved = localStorage.getItem(STORAGE_KEYS.menu);
-    const parsed = saved ? JSON.parse(saved) : null;
-    return normalizeMenuItems(parsed);
+    return saved ? JSON.parse(saved) : defaultMenuItems;
   } catch (error) {
-    return defaultMenuItems.map((item) => ({
-      ...item,
-      img: resolveMenuImage(item.img),
-    }));
+    return defaultMenuItems;
   }
 }
 
@@ -311,14 +472,19 @@ function getFilteredItems() {
       activeCategory === "All" || item.category === activeCategory;
     const matchesSearch = item.name
       .toLowerCase()
-      .includes(searchQuery.toLowerCase());
+      .includes(searchQuery.toLowerCase()) ||
+      getTranslatedItemName(item.name).toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 }
 
 function renderMenu(items) {
   const grid = document.getElementById("menu-grid");
+  if (!grid) return;
   grid.innerHTML = "";
+
+  const lang = getCurrentLang();
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.am;
 
   items.forEach((item) => {
     const approvedReviews = reviews.filter(
@@ -329,34 +495,39 @@ function renderMenu(items) {
           approvedReviews.reduce((sum, review) => sum + review.rating, 0) /
           approvedReviews.length
         ).toFixed(1)
-      : "No reviews";
+      : t.noReviews;
     const reviewCount = approvedReviews.length;
     const isOutOfStock = item.stock <= 0;
+
+    const displayName = getTranslatedItemName(item.name);
+    const displayCategory = getTranslatedCategory(item.category);
 
     const card = document.createElement("article");
     card.className = "menu-card p-4";
     card.innerHTML = `
       <div class="menu-card-badges">
         <span class="badge ${isOutOfStock ? "out-of-stock" : "in-stock"}">
-          ${isOutOfStock ? "አልቋል" : `${item.stock} ቀሪ`}
+          ${isOutOfStock ? t.outOfStock : `${item.stock} ${t.inStock}`}
         </span>
-        ${item.prepEstimate <= 10 ? '<span class="badge fast">በፍጥነት የሚደርስ</span>' : ""}
+        ${item.prepEstimate <= 10 ? `<span class="badge fast">${t.fastPrep}</span>` : ""}
       </div>
-      <img src="${item.img}" alt="${item.name}" class="h-48 w-full object-cover rounded-t-lg mb-4" loading="lazy" onerror="this.onerror=null;this.src='foodimage/images.jpg';" />
-      <h3 class="text-lg font-bold">${item.name}</h3>
-      <p class="text-sm text-slate-500">${item.category}</p>
-      <div class="rating-row">
-        <button type="button" class="star-btn" data-action="rate" data-id="${item.id}">★</button>
+      <div class="image-shell loaded">
+        <img src="${item.img}" alt="${displayName}" class="menu-image" loading="lazy" />
+      </div>
+      <h3 class="text-lg font-bold">${displayName}</h3>
+      <p class="text-sm text-slate-500 mb-2">${displayCategory}</p>
+      <div class="rating-row mb-3 flex items-center gap-2 text-sm">
+        <button type="button" class="star-btn text-amber-500 text-base" data-action="rate" data-id="${item.id}">★</button>
         <span class="font-semibold">${average}</span>
-        <span class="review-count">(${reviewCount})</span>
+        <span class="text-slate-400">(${reviewCount})</span>
       </div>
-      <p class="mb-4 font-bold text-emerald-600">${item.price} ብር</p>
-      <button type="button" class="add-to-cart w-full rounded-lg px-4 py-2 font-semibold transition ${
+      <p class="mb-4 font-bold text-emerald-600 text-lg">${item.price} ${t.currency}</p>
+      <button type="button" class="add-to-cart w-full rounded-xl px-4 py-2.5 font-semibold transition ${
         isOutOfStock
           ? "disabled-button"
-          : "bg-slate-900 text-white hover:bg-emerald-600"
+          : "btn-active"
       }" data-id="${item.id}" ${isOutOfStock ? "disabled" : ""}>
-        ${isOutOfStock ? "የተሽለ" : "አክል"}
+        ${isOutOfStock ? t.outOfStockBtn : t.addBtn}
       </button>
     `;
 
@@ -381,7 +552,8 @@ function filterMenu(category) {
 
 function updateCartBadge() {
   const count = cart.reduce((sum, item) => sum + item.quantity, 0);
-  document.getElementById("cart-count").textContent = count;
+  const badge = document.getElementById("cart-count");
+  if (badge) badge.textContent = count;
 }
 
 function openCart() {
@@ -396,9 +568,14 @@ function closeCart() {
 
 function renderCart() {
   const container = document.getElementById("cart-items");
+  if (!container) return;
+
   const promoInput = document.getElementById("promo-code");
   const promoCode = promoInput ? promoInput.value.trim().toUpperCase() : "";
   let adjusted = false;
+
+  const lang = getCurrentLang();
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.am;
 
   cart = cart.map((item) => {
     const menuItem = menuItems.find((menuItem) => menuItem.id === item.id);
@@ -412,16 +589,14 @@ function renderCart() {
   cart = cart.filter((item) => item.quantity > 0);
   if (adjusted) {
     saveCart();
-    showToast("Cart quantities adjusted for current stock.");
+    showToast(t.cartAdjusted);
   }
 
   if (!cart.length) {
-    container.innerHTML =
-      '<p class="text-center text-slate-500">የእርስዎ ትዕዛዝ ባዶ ነው።</p>';
-    document.getElementById("cart-total").textContent = "0 ብር";
-    document.getElementById("discounted-total").textContent = "0 ብር";
-    document.getElementById("promo-message").textContent =
-      "Enter STUDENT10 for 10% off";
+    container.innerHTML = `<p class="text-center text-slate-500">${t.cartEmpty}</p>`;
+    document.getElementById("cart-total").textContent = `0 ${t.currency}`;
+    document.getElementById("discounted-total").textContent = `0 ${t.currency}`;
+    document.getElementById("promo-message").textContent = t.promoHint;
     document.getElementById("promo-message").className = "promo-message";
     updateCartBadge();
     return;
@@ -434,16 +609,17 @@ function renderCart() {
         (menuItems.find((menuItem) => menuItem.id === item.id)?.stock || 0)
           ? " (limited stock)"
           : "";
+      const displayName = getTranslatedItemName(item.name);
       return `
         <div class="cart-item">
-          <img src="${item.img}" alt="${item.name}" onerror="this.onerror=null;this.src='foodimage/images.jpg';" />
+          <img src="${item.img}" alt="${displayName}" />
           <div class="flex-1">
             <div class="flex items-start justify-between gap-2">
               <div>
-                <h4 class="font-semibold">${item.name}</h4>
-                <p class="text-sm text-emerald-600">${item.price} ብር${outOfStockLabel}</p>
+                <h4 class="font-semibold">${displayName}</h4>
+                <p class="text-sm text-emerald-600">${item.price} ${t.currency}${outOfStockLabel}</p>
               </div>
-              <button type="button" class="text-sm text-rose-500" data-action="delete" data-id="${item.id}">Delete</button>
+              <button type="button" class="text-sm text-rose-500" data-action="delete" data-id="${item.id}">${t.delete}</button>
             </div>
             <div class="mt-3 flex items-center justify-between gap-2">
               <div class="quantity-controls">
@@ -451,7 +627,7 @@ function renderCart() {
                 <span class="min-w-6 text-center">${item.quantity}</span>
                 <button type="button" data-action="increase" data-id="${item.id}">+</button>
               </div>
-              <span class="font-semibold">${item.price * item.quantity} ብር</span>
+              <span class="font-semibold">${item.price * item.quantity} ${t.currency}</span>
             </div>
           </div>
         </div>
@@ -464,14 +640,13 @@ function renderCart() {
   const discount = validPromo ? 0.1 : 0;
   const discountedTotal = Math.round(total * (1 - discount));
 
-  document.getElementById("cart-total").textContent = `${total} ብር`;
-  document.getElementById("discounted-total").textContent =
-    `${discountedTotal} ብር`;
+  document.getElementById("cart-total").textContent = `${total} ${t.currency}`;
+  document.getElementById("discounted-total").textContent = `${discountedTotal} ${t.currency}`;
   document.getElementById("promo-message").textContent = promoCode
     ? validPromo
-      ? "10% discount applied"
-      : "Invalid promo code"
-    : "Enter STUDENT10 for 10% off";
+      ? t.promoSuccess
+      : t.invalidPromo
+    : t.promoHint;
   document.getElementById("promo-message").className =
     `promo-message ${validPromo ? "success" : promoCode ? "error" : ""}`;
   updateCartBadge();
@@ -480,15 +655,19 @@ function renderCart() {
 function addToCart(id) {
   const item = menuItems.find((menuItem) => menuItem.id === id);
   if (!item) return;
+
+  const lang = getCurrentLang();
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.am;
+
   if (item.stock <= 0) {
-    showToast("ይቅር ይገባል፣ እቃው አልቋል");
+    showToast(lang === "en" ? "Sorry, item is out of stock" : "ይቅር ይገባል፣ እቃው አልቋል");
     return;
   }
 
   const existingItem = cart.find((cartItem) => cartItem.id === id);
   if (existingItem) {
     if (existingItem.quantity >= item.stock) {
-      showToast("የቀሪ እቃ አልባ");
+      showToast(lang === "en" ? "Maximum stock limit reached" : "የቀሪ እቃ አልባ");
       return;
     }
     existingItem.quantity += 1;
@@ -498,7 +677,8 @@ function addToCart(id) {
 
   saveCart();
   renderCart();
-  showToast("Item added to cart!");
+  renderOrdersSidebar();
+  showToast(t.itemAdded);
   bumpCartButton();
 }
 
@@ -521,40 +701,21 @@ function getPrepComplexityLabel(minutes) {
 }
 
 async function generateCookTimeExplanation(order, queuePosition) {
-  const fallback = `እርስዎ ${queuePosition}ኛ ትዕዛዝ ላይ ነዎት፣ የተጠቃሚ ዝግጅት ${order.estimatedMinutes} ደቂቃ ነው።`;
-  const apiKey = ""; // Replace with your Gemini/OpenAI API key to activate AI explanation.
-  if (!apiKey) {
-    return fallback;
-  }
-
-  const prompt = `Create a short Amharic explanation for an order with ${order.items.length} items in queue position ${queuePosition}. Mention kitchen load, complexity, and estimated prep time: ${order.estimatedMinutes} minutes.`;
-
-  try {
-    const response = await fetch("https://api.example.com/v1/generate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: "gemini-pro",
-        prompt,
-        max_output_tokens: 80,
-      }),
-    });
-    const data = await response.json();
-    return data?.candidates?.[0]?.content?.[0]?.text || fallback;
-  } catch (error) {
-    return fallback;
-  }
+  const lang = getCurrentLang();
+  const fallback = lang === "en" 
+    ? `You are #${queuePosition} in queue. Estimated prep time is ${order.estimatedMinutes} mins.`
+    : `እርስዎ ${queuePosition}ኛ ትዕዛዝ ላይ ነዎት፣ የተጠቃሚ ዝግጅት ${order.estimatedMinutes} ደቂቃ ነው።`;
+  return fallback;
 }
 
 function getStatusLabel(status) {
+  const lang = getCurrentLang();
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.am;
   const map = {
-    Pending: "በመጠባበቅ ላይ",
-    Preparing: "በዝግጅት ላይ",
-    Ready: "ዝግጁ ነው",
-    Completed: "ተጠናቋል",
+    Pending: t.statusPending,
+    Preparing: t.statusPreparing,
+    Ready: t.statusReady,
+    Completed: t.statusCompleted,
   };
   return map[status] || status;
 }
@@ -571,8 +732,12 @@ function updateOrderStatusCard(order) {
     countdownBadge.className = `status-badge ${order.status.toLowerCase()}`;
   }
   const prep = document.getElementById("success-prep-text");
-  if (prep)
-    prep.textContent = `እርስዎ ${order.queuePosition}ኛ ትዕዛዝ ላይ ነዎት · ${order.estimatedMinutes} ደቂቃ ተጠቃሚ ጊዜ`;
+  if (prep) {
+    const lang = getCurrentLang();
+    prep.textContent = lang === "en"
+      ? `Queue position #${order.queuePosition} · ${order.estimatedMinutes} mins prep time`
+      : `እርስዎ ${order.queuePosition}ኛ ትዕዛዝ ላይ ነዎት · ${order.estimatedMinutes} ደቂቃ ተጠቃሚ ጊዜ`;
+  }
 
   const sidebarBadge = document.getElementById("sidebar-status-badge");
   if (sidebarBadge) {
@@ -596,18 +761,18 @@ function saveCustomerOrder(order) {
 
 function showOrderSuccess(order) {
   const modal = document.getElementById("order-success-modal");
-  document.getElementById("success-order-number").textContent =
-    `#${order.number}`;
+  const lang = getCurrentLang();
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.am;
+
+  document.getElementById("success-order-number").textContent = `#${order.number}`;
   document.getElementById("success-order-items").innerHTML = order.items
     .map(
       (it) =>
-        `<li class="flex items-center justify-between gap-2"><span>${it.name} × ${it.quantity}</span><span>${it.price * it.quantity} ብር</span></li>`,
+        `<li class="flex items-center justify-between gap-2"><span>${getTranslatedItemName(it.name)} × ${it.quantity}</span><span>${it.price * it.quantity} ${t.currency}</span></li>`,
     )
     .join("");
-  document.getElementById("success-order-total").textContent =
-    `${order.payable} ብር`;
-  document.getElementById("success-delivery-time").textContent =
-    `${order.estimatedMinutes} ደቂቃ`;
+  document.getElementById("success-order-total").textContent = `${order.payable} ${t.currency}`;
+  document.getElementById("success-delivery-time").textContent = `${order.estimatedMinutes}`;
   modal.classList.add("open");
   renderOrdersSidebar(order);
   startOrderCountdown(order);
@@ -617,51 +782,87 @@ function renderOrdersSidebar(order) {
   const body = document.getElementById("orders-sidebar-body");
   if (!body) return;
 
+  const lang = getCurrentLang();
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.am;
+
   if (!order) order = loadCustomerOrder();
-  if (!order || order.status === "Completed") {
-    body.innerHTML =
-      '<p class="text-slate-500">ምንም ንቁ ትዕዛዝ የለም። ከመን ላይ ያሉ ምግቦችን ይጨምሩ።</p>';
+  if (order && order.status !== "Completed") {
+    body.innerHTML = `
+      <div class="sidebar-row">
+        <span class="font-semibold">${lang === "en" ? "Order" : "እርከን"}</span>
+        <span>#${order.number}</span>
+      </div>
+      <div class="sidebar-row">
+        <span class="font-semibold">${lang === "en" ? "Status" : "ሁኔታ"}</span>
+        <span id="sidebar-status-badge" class="status-badge ${order.status.toLowerCase()}">${getStatusLabel(order.status)}</span>
+      </div>
+      <ul class="sidebar-items">
+        ${order.items
+          .map(
+            (it) =>
+              `<li>${getTranslatedItemName(it.name)} × ${it.quantity} — ${it.price * it.quantity} ${t.currency}</li>`,
+          )
+          .join("")}
+      </ul>
+      <div class="sidebar-row">
+        <span class="font-semibold">${t.total}</span>
+        <span>${order.payable} ${t.currency}</span>
+      </div>
+      <div class="sidebar-row">
+        <span class="font-semibold">${lang === "en" ? "Delivery Time" : "የማድረሻ ጊዜ"}</span>
+        <span id="sidebar-countdown-text" class="text-xl font-bold">${order.estimatedMinutes}:00</span>
+      </div>
+      <div class="sidebar-actions">
+        <button type="button" id="sidebar-track-btn" class="rounded-xl bg-slate-900 px-4 py-2 font-semibold text-white w-full">${lang === "en" ? "Track Order" : "ትዕዛዙን አሳይ"}</button>
+      </div>
+    `;
+
+    const trackBtn = document.getElementById("sidebar-track-btn");
+    if (trackBtn) {
+      trackBtn.addEventListener("click", () => {
+        const modal = document.getElementById("order-success-modal");
+        modal.classList.add("open");
+        startOrderCountdown(order);
+      });
+    }
     return;
   }
 
-  body.innerHTML = `
-    <div class="sidebar-row">
-      <span class="font-semibold">እርከን</span>
-      <span>#${order.number}</span>
-    </div>
-    <div class="sidebar-row">
-      <span class="font-semibold">ሁኔታ</span>
-      <span id="sidebar-status-badge" class="status-badge ${order.status.toLowerCase()}">${getStatusLabel(order.status)}</span>
-    </div>
-    <ul class="sidebar-items">
-      ${order.items
-        .map(
-          (it) =>
-            `<li>${it.name} × ${it.quantity} — ${it.price * it.quantity} ብር</li>`,
-        )
-        .join("")}
-    </ul>
-    <div class="sidebar-row">
-      <span class="font-semibold">ጠቅላላ</span>
-      <span>${order.payable} ብር</span>
-    </div>
-    <div class="sidebar-row">
-      <span class="font-semibold">የማድረሻ ጊዜ</span>
-      <span id="sidebar-countdown-text" class="text-xl font-bold">${order.estimatedMinutes}:00</span>
-    </div>
-    <div class="sidebar-actions">
-      <button type="button" id="sidebar-track-btn" class="rounded-xl bg-slate-900 px-4 py-2 font-semibold text-white">ትዕዛዙን አሳይ</button>
-    </div>
-  `;
+  if (cart.length > 0) {
+    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  const trackBtn = document.getElementById("sidebar-track-btn");
-  if (trackBtn) {
-    trackBtn.addEventListener("click", () => {
-      const modal = document.getElementById("order-success-modal");
-      modal.classList.add("open");
-      startOrderCountdown(order);
-    });
+    body.innerHTML = `
+      <ul class="sidebar-items mb-3">
+        ${cart
+          .map(
+            (item) => `
+          <li class="flex items-center justify-between py-1.5 border-b border-slate-100 text-sm">
+            <span>${getTranslatedItemName(item.name)} × ${item.quantity}</span>
+            <span class="font-semibold">${item.price * item.quantity} ${t.currency}</span>
+          </li>
+        `,
+          )
+          .join("")}
+      </ul>
+      <div class="sidebar-row font-bold text-base mb-3">
+        <span>${t.total}</span>
+        <span>${total} ${t.currency}</span>
+      </div>
+      <div class="sidebar-actions">
+        <button type="button" id="sidebar-checkout-btn" class="w-full rounded-xl bg-emerald-600 hover:bg-emerald-700 px-4 py-2.5 font-semibold text-white shadow-sm transition">
+          ${t.checkoutBtn}
+        </button>
+      </div>
+    `;
+
+    const checkoutBtn = document.getElementById("sidebar-checkout-btn");
+    if (checkoutBtn) {
+      checkoutBtn.addEventListener("click", openCheckoutModal);
+    }
+    return;
   }
+
+  body.innerHTML = `<p class="text-slate-500 text-sm">${t.noActiveOrder}</p>`;
 }
 
 function resumeCustomerOrder() {
@@ -671,15 +872,17 @@ function resumeCustomerOrder() {
 }
 
 function sendReadyNotification(order) {
+  const lang = getCurrentLang();
   if ("Notification" in window && Notification.permission === "granted") {
-    new Notification("ትዕዛዝዎ ደርሷል! መረከብ ይችላሉ");
+    new Notification(lang === "en" ? "Your order is ready!" : "ትዕዛዝዎ ደርሷል! መረከብ ይችላሉ");
   }
 
   const audio = new Audio(
     "https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg",
   );
   audio.play().catch(() => {});
-  showToast(`Order ${order.number} is ready!`);
+
+  showToast(lang === "en" ? `Order #${order.number} is ready!` : `ትዕዛዝ #${order.number} ዝግጁ ነው!`);
 }
 
 function startOrderCountdown(order) {
@@ -715,17 +918,13 @@ function updateCountdown(orderId) {
   const minutes = Math.floor(remaining / 60);
   const seconds = remaining % 60;
 
+  const formatted = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+
   const countdownText = document.getElementById("success-countdown-text");
-  if (countdownText)
-    countdownText.textContent = `${String(minutes).padStart(2, "0")}:${String(
-      seconds,
-    ).padStart(2, "0")}`;
+  if (countdownText) countdownText.textContent = formatted;
 
   const sidebarCountdown = document.getElementById("sidebar-countdown-text");
-  if (sidebarCountdown)
-    sidebarCountdown.textContent = `${String(minutes).padStart(2, "0")}:${String(
-      seconds,
-    ).padStart(2, "0")}`;
+  if (sidebarCountdown) sidebarCountdown.textContent = formatted;
 
   if (remaining === 0) {
     clearInterval(countdownTimer);
@@ -743,12 +942,13 @@ function updateCountdown(orderId) {
 function openReviewModal(itemId) {
   reviewTargetId = itemId;
   reviewRating = 0;
-  const reviewItemName =
-    menuItems.find((item) => item.id === itemId)?.name || "Item";
+  const item = menuItems.find((item) => item.id === itemId);
+  const reviewItemName = item ? getTranslatedItemName(item.name) : "Item";
   document.getElementById("review-item-name").textContent = reviewItemName;
   document.getElementById("review-comment").value = "";
   document.getElementById("review-name").value = "";
-  document.getElementById("review-stars").innerHTML = "";
+  const starsContainer = document.getElementById("review-stars");
+  starsContainer.innerHTML = "";
   for (let i = 1; i <= 5; i += 1) {
     const star = document.createElement("button");
     star.type = "button";
@@ -759,7 +959,7 @@ function openReviewModal(itemId) {
       reviewRating = i;
       renderReviewStars();
     });
-    document.getElementById("review-stars").appendChild(star);
+    starsContainer.appendChild(star);
   }
   renderReviewStars();
   document.getElementById("review-modal").classList.add("open");
@@ -783,21 +983,23 @@ function saveReview(event) {
   const commentInput = document.getElementById("review-comment");
   const name = nameInput.value.trim();
   const comment = commentInput.value.trim();
+  const lang = getCurrentLang();
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.am;
 
   if (!reviewTargetId) {
-    showToast("No item selected for review.");
+    showToast(lang === "en" ? "No item selected for review." : "ምንም የተመረጠ እቃ የለም።");
     return;
   }
   if (reviewRating === 0) {
-    showToast("Please select a star rating.");
+    showToast(lang === "en" ? "Please select a star rating." : "እባክዎን ኮከብ ይምረጡ።");
     return;
   }
   if (!name) {
-    showToast("Please enter your name.");
+    showToast(lang === "en" ? "Please enter your name." : "እባክዎን ስምዎን ያስገቡ።");
     return;
   }
   if (!comment) {
-    showToast("Please write a comment.");
+    showToast(lang === "en" ? "Please write a comment." : "እባክዎን አስተያየት ይጻፉ።");
     return;
   }
 
@@ -817,17 +1019,18 @@ function saveReview(event) {
   commentInput.value = "";
   reviewRating = 0;
 
-  showToast("አስተያየትዎ ስለተላከ እናመሰግናለን! በግምገማ ላይ ይገኛል።");
+  showToast(t.reviewSubmitted || "Thank you for your review!");
 }
 
 function updateCartItem(id, action) {
   const target = cart.find((item) => item.id === id);
   if (!target) return;
   const menuItem = menuItems.find((item) => item.id === id);
+  const lang = getCurrentLang();
 
   if (action === "increase") {
     if (menuItem && target.quantity >= menuItem.stock) {
-      showToast("Cannot add more than available stock.");
+      showToast(lang === "en" ? "Cannot add more than available stock." : "ከተገኘው መጠን በላይ መጨመር አይቻልም።");
       return;
     }
     target.quantity += 1;
@@ -843,10 +1046,12 @@ function updateCartItem(id, action) {
 
   saveCart();
   renderCart();
+  renderOrdersSidebar();
 }
 
 function showToast(message) {
   const container = document.getElementById("toast-container");
+  if (!container) return;
   const toast = document.createElement("div");
   toast.className = "toast";
   toast.textContent = message;
@@ -856,14 +1061,16 @@ function showToast(message) {
 
 function bumpCartButton() {
   const button = document.getElementById("cart-toggle");
+  if (!button) return;
   button.classList.remove("bump");
   void button.offsetWidth;
   button.classList.add("bump");
 }
 
 function openCheckoutModal() {
+  const lang = getCurrentLang();
   if (!cart.length) {
-    showToast("Your cart is empty.");
+    showToast(lang === "en" ? "Your cart is empty." : "የእርስዎ ቅርጫት ባዶ ነው።");
     return;
   }
   document.getElementById("checkout-modal").classList.add("open");
@@ -874,8 +1081,11 @@ function closeCheckoutModal() {
 }
 
 function sendOrderToTelegram() {
+  const lang = getCurrentLang();
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.am;
+
   if (!cart.length) {
-    showToast("Your cart is empty.");
+    showToast(t.cartEmpty);
     return;
   }
 
@@ -886,14 +1096,14 @@ function sendOrderToTelegram() {
     document.getElementById("promo-code")?.value.trim().toUpperCase() || "";
 
   if (!name || !phone || !address) {
-    showToast("Please fill in name, phone, and address.");
+    showToast(lang === "en" ? "Please fill in name, phone, and address." : "እባክዎን ስም፣ ስልክ እና አድራሻ ይሙሉ።");
     return;
   }
 
   const itemsSummary = cart
     .map(
       (item) =>
-        `- ${item.name} × ${item.quantity} = ${item.price * item.quantity} ብር`,
+        `- ${getTranslatedItemName(item.name)} × ${item.quantity} = ${item.price * item.quantity} ${t.currency}`,
     )
     .join("\n");
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -917,7 +1127,7 @@ function sendOrderToTelegram() {
     discount: discount * 100,
     payable: discountedTotal,
     estimatedMinutes,
-    deliveryTime: `${estimatedMinutes} ደቂቃ`,
+    deliveryTime: `${estimatedMinutes} ${lang === "en" ? "mins" : "ደቂቃ"}`,
     createdAt: Date.now(),
     readyAt: null,
   };
@@ -942,7 +1152,7 @@ function sendOrderToTelegram() {
   updateAdminPanel();
   saveCustomerOrder(order);
   closeCheckoutModal();
-  showToast("Order placed and kitchen notified!");
+  showToast(lang === "en" ? "Order placed successfully!" : "ትዕዛዝዎ በተሳካ ሁኔታ ተልኳል!");
   showOrderSuccess(order);
 
   const message = [
@@ -954,9 +1164,9 @@ function sendOrderToTelegram() {
     "Items:",
     itemsSummary,
     "",
-    `Total: ${total} ብር`,
+    `Total: ${total} ${t.currency}`,
     `Discount: ${discount ? "10%" : "None"}`,
-    `Payable: ${discountedTotal} ብር`,
+    `Payable: ${discountedTotal} ${t.currency}`,
   ].join("\n");
 
   const telegramUrl = `https://t.me/${telegramUser}?text=${encodeURIComponent(message)}`;
@@ -972,7 +1182,11 @@ function loadTheme() {
       : "light");
   document.body.setAttribute("data-theme", preferredTheme);
   const button = document.getElementById("theme-toggle");
-  button.textContent = preferredTheme === "dark" ? "☀️ Light" : "🌙 Dark";
+  const lang = getCurrentLang();
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.am;
+  if (button) {
+    button.textContent = preferredTheme === "dark" ? t.themeLight : t.themeDark;
+  }
 }
 
 function toggleTheme() {
@@ -980,8 +1194,12 @@ function toggleTheme() {
     document.body.getAttribute("data-theme") === "dark" ? "light" : "dark";
   document.body.setAttribute("data-theme", currentTheme);
   localStorage.setItem(STORAGE_KEYS.theme, currentTheme);
-  document.getElementById("theme-toggle").textContent =
-    currentTheme === "dark" ? "☀️ Light" : "🌙 Dark";
+  const button = document.getElementById("theme-toggle");
+  const lang = getCurrentLang();
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.am;
+  if (button) {
+    button.textContent = currentTheme === "dark" ? t.themeLight : t.themeDark;
+  }
 }
 
 function getSalesSummary() {
@@ -1006,6 +1224,9 @@ function getSalesSummary() {
 }
 
 function renderAdminStats() {
+  const lang = getCurrentLang();
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.am;
+
   const totalRevenue = orders.reduce((sum, order) => sum + order.payable, 0);
   const totalCost = orders.reduce(
     (sum, order) =>
@@ -1021,22 +1242,29 @@ function renderAdminStats() {
     ? Math.round((netProfit / totalRevenue) * 100)
     : 0;
 
-  document.getElementById("active-users").textContent = activeUsers;
-  document.getElementById("total-revenue").textContent = `${totalRevenue} ብር`;
-  document.getElementById("total-cost").textContent = `${totalCost} ብር`;
-  document.getElementById("net-profit").textContent = `${netProfit} ብር`;
+  const activeUsersNode = document.getElementById("active-users");
+  if (activeUsersNode) activeUsersNode.textContent = activeUsers;
+  document.getElementById("total-revenue").textContent = `${totalRevenue} ${t.currency}`;
+  document.getElementById("total-cost").textContent = `${totalCost} ${t.currency}`;
+  document.getElementById("net-profit").textContent = `${netProfit} ${t.currency}`;
   document.getElementById("profit-margin").textContent = `${profitMargin}%`;
 }
 
 function renderInventoryTable() {
   const body = document.getElementById("inventory-table-body");
+  if (!body) return;
   body.innerHTML = "";
 
+  const lang = getCurrentLang();
+
   menuItems.forEach((item) => {
-    const availability = item.stock > 0 ? "Available" : "Unavailable";
+    const displayName = getTranslatedItemName(item.name);
+    const availability = item.stock > 0 
+      ? (lang === "en" ? "Available" : "አለ") 
+      : (lang === "en" ? "Unavailable" : "የለም");
     const row = document.createElement("tr");
     row.innerHTML = `
-      <td>${item.name}</td>
+      <td>${displayName}</td>
       <td><input type="number" min="0" value="${item.stock}" data-id="${item.id}" data-field="stock" class="admin-input" /></td>
       <td>${availability}</td>
       <td>
@@ -1048,9 +1276,9 @@ function renderInventoryTable() {
       </td>
       <td>
         <div class="admin-button-group">
-          <button type="button" data-action="save-inventory" data-id="${item.id}" class="admin-button">Save</button>
+          <button type="button" data-action="save-inventory" data-id="${item.id}" class="admin-button">${lang === "en" ? "Save" : "አስቀምጥ"}</button>
           <button type="button" data-action="toggle-availability" data-id="${item.id}" class="admin-button secondary">${
-            item.stock > 0 ? "Out of stock" : "Restock"
+            item.stock > 0 ? (lang === "en" ? "Out of stock" : "ያለቀው") : (lang === "en" ? "Restock" : "መልስ")
           }</button>
         </div>
       </td>
@@ -1061,7 +1289,12 @@ function renderInventoryTable() {
 
 function renderIncomingOrders() {
   const body = document.getElementById("incoming-orders-table-body");
+  if (!body) return;
   body.innerHTML = "";
+
+  const lang = getCurrentLang();
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.am;
+
   const sortedIncoming = [...incomingOrders].sort(
     (a, b) => a.createdAt - b.createdAt,
   );
@@ -1069,7 +1302,7 @@ function renderIncomingOrders() {
   if (!sortedIncoming.length) {
     body.innerHTML = `
       <tr>
-        <td colspan="6" class="text-slate-500 text-center py-4">No incoming orders.</td>
+        <td colspan="6" class="text-slate-500 text-center py-4">${t.noIncomingOrders}</td>
       </tr>
     `;
     return;
@@ -1080,12 +1313,12 @@ function renderIncomingOrders() {
     row.innerHTML = `
       <td>${order.customer.name}</td>
       <td>${order.items
-        .map((item) => `${item.name} x ${item.quantity}`)
+        .map((item) => `${getTranslatedItemName(item.name)} x ${item.quantity}`)
         .join("<br />")}</td>
-      <td>${order.payable} ብር</td>
-      <td>${new Date(order.createdAt).toLocaleString()}</td>
-      <td>${order.status}</td>
-      <td>${order.status === "Completed" ? "-" : `<button type="button" class="admin-button" data-action="mark-ready" data-id="${order.id}">Mark Ready</button>`}</td>
+      <td>${order.payable} ${t.currency}</td>
+      <td>${new Date(order.createdAt).toLocaleTimeString()}</td>
+      <td>${getStatusLabel(order.status)}</td>
+      <td>${order.status === "Completed" ? "-" : `<button type="button" class="admin-button" data-action="mark-ready" data-id="${order.id}">${lang === "en" ? "Mark Ready" : "ዝግጁ በል"}</button>`}</td>
     `;
     body.appendChild(row);
   });
@@ -1093,7 +1326,11 @@ function renderIncomingOrders() {
 
 function renderAdminOrders() {
   const body = document.getElementById("orders-table-body");
+  if (!body) return;
   body.innerHTML = "";
+
+  const lang = getCurrentLang();
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.am;
   const sortedOrders = [...orders].sort((a, b) => a.createdAt - b.createdAt);
 
   sortedOrders.forEach((order) => {
@@ -1110,7 +1347,7 @@ function renderAdminOrders() {
       </td>
       <td>${order.queuePosition}</td>
       <td>${order.customer.name}</td>
-      <td>${order.payable} ብር</td>
+      <td>${order.payable} ${t.currency}</td>
     `;
     body.appendChild(row);
   });
@@ -1118,24 +1355,30 @@ function renderAdminOrders() {
 
 function renderTopSellingList() {
   const list = document.getElementById("top-selling-list");
+  if (!list) return;
   list.innerHTML = "";
+
+  const lang = getCurrentLang();
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.am;
   const sales = getSalesSummary();
+
   if (!sales.length) {
-    list.innerHTML = "<p class='text-slate-500'>No sales yet.</p>";
+    list.innerHTML = `<p class="text-slate-500">${t.noSalesYet}</p>`;
     return;
   }
 
   const top = sales.sort((a, b) => b.quantity - a.quantity).slice(0, 4);
 
   top.forEach((item) => {
+    const displayName = getTranslatedItemName(item.name);
     const card = document.createElement("div");
     card.className = "review-card";
     card.innerHTML = `
       <div class="review-card-header">
-        <strong>${item.name}</strong>
-        <span>${item.quantity} sold</span>
+        <strong>${displayName}</strong>
+        <span>${item.quantity} ${lang === "en" ? "sold" : "ተሸጧል"}</span>
       </div>
-      <p class="review-card-meta">Revenue ${item.revenue} ብር</p>
+      <p class="review-card-meta">${lang === "en" ? "Revenue" : "ገቢ"} ${item.revenue} ${t.currency}</p>
     `;
     list.appendChild(card);
   });
@@ -1143,8 +1386,13 @@ function renderTopSellingList() {
 
 function renderLeastSellingList() {
   const list = document.getElementById("least-selling-list");
+  if (!list) return;
   list.innerHTML = "";
+
+  const lang = getCurrentLang();
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.am;
   const sales = getSalesSummary();
+
   const allItems = menuItems.map((item) => ({
     id: item.id,
     name: item.name,
@@ -1157,14 +1405,15 @@ function renderLeastSellingList() {
   const least = merged.sort((a, b) => a.quantity - b.quantity).slice(0, 4);
 
   least.forEach((item) => {
+    const displayName = getTranslatedItemName(item.name);
     const card = document.createElement("div");
     card.className = "review-card";
     card.innerHTML = `
       <div class="review-card-header">
-        <strong>${item.name}</strong>
-        <span>${item.quantity} sold</span>
+        <strong>${displayName}</strong>
+        <span>${item.quantity} ${lang === "en" ? "sold" : "ተሸጧል"}</span>
       </div>
-      <p class="review-card-meta">Low sales alert</p>
+      <p class="review-card-meta">${lang === "en" ? "Low sales alert" : "ዝቅተኛ ሽያጭ"}</p>
     `;
     list.appendChild(card);
   });
@@ -1172,16 +1421,20 @@ function renderLeastSellingList() {
 
 function renderReviewModeration() {
   const list = document.getElementById("review-moderation-list");
+  if (!list) return;
   list.innerHTML = "";
 
+  const lang = getCurrentLang();
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.am;
+
   if (!reviews.length) {
-    list.innerHTML = "<p class='text-slate-500'>No reviews yet.</p>";
+    list.innerHTML = `<p class="text-slate-500">${t.noReviewsYet}</p>`;
     return;
   }
 
   reviews.forEach((review) => {
     const item = menuItems.find((item) => item.id === review.itemId);
-    const itemName = item ? item.name : "Unknown item";
+    const itemName = item ? getTranslatedItemName(item.name) : "Unknown item";
     const isApproved = review.status === "approved";
 
     const card = document.createElement("div");
@@ -1191,20 +1444,18 @@ function renderReviewModeration() {
       <div class="review-card-header">
         <strong>${itemName}</strong>
         <span class="badge-status ${
-          isApproved
-            ? "bg-emerald-100 text-emerald-800"
-            : "bg-amber-100 text-amber-800"
-        }">${isApproved ? "Approved" : "Pending"}</span>
+          isApproved ? "bg-emerald-100 text-emerald-800" : "bg-amber-100 text-amber-800"
+        }">${isApproved ? (lang === "en" ? "Approved" : "ተጸድቋል") : (lang === "en" ? "Pending" : "በመጠባበቅ ላይ")}</span>
       </div>
       <p class="review-card-meta">${review.name} · ${review.rating} ★</p>
       <p>${review.comment || ""}</p>
-      <div class="review-card-actions">
+      <div class="review-card-actions mt-3">
         ${
           isApproved
             ? ""
-            : `<button type="button" class="admin-button" data-action="approve-review" data-review-id="${review.id}" data-item-id="${review.itemId}">Approve</button>`
+            : `<button type="button" class="admin-button" data-action="approve-review" data-review-id="${review.id}" data-item-id="${review.itemId}">${lang === "en" ? "Approve" : "አፅድቅ"}</button>`
         }
-        <button type="button" class="admin-button secondary" data-action="delete-review" data-review-id="${review.id}" data-item-id="${review.itemId}">Delete</button>
+        <button type="button" class="admin-button secondary" data-action="delete-review" data-review-id="${review.id}" data-item-id="${review.itemId}">${lang === "en" ? "Delete" : "ሰርዝ"}</button>
       </div>
     `;
     list.appendChild(card);
@@ -1215,17 +1466,19 @@ function renderPublicReviews() {
   const container = document.getElementById("public-reviews");
   if (!container) return;
 
+  const lang = getCurrentLang();
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.am;
+
   const approved = reviews.filter((review) => review.status === "approved");
   if (!approved.length) {
-    container.innerHTML =
-      '<p class="text-slate-500">No approved reviews yet.</p>';
+    container.innerHTML = `<p class="text-slate-500">${t.noReviewsYet}</p>`;
     return;
   }
 
   container.innerHTML = approved
     .map((review) => {
       const item = menuItems.find((item) => item.id === review.itemId);
-      const itemName = item ? item.name : "Unknown item";
+      const itemName = item ? getTranslatedItemName(item.name) : "Unknown item";
       return `
         <div class="review-card">
           <div class="review-card-header">
@@ -1277,12 +1530,13 @@ function closeAdminPanel() {
 
 function attemptAdminLogin() {
   const password = document.getElementById("admin-password").value.trim();
+  const lang = getCurrentLang();
   if (password === ADMIN_PASSWORD) {
     closeAdminLoginModal();
     openAdminPanel();
-    showToast("Admin access granted.");
+    showToast(lang === "en" ? "Admin access granted." : "የአድሚን መግቢያ ተሳክቷል።");
   } else {
-    showToast("Invalid admin passcode.");
+    showToast(lang === "en" ? "Invalid admin passcode." : "የተሳሳተ የምስጢር ቁጥር።");
   }
 }
 
@@ -1291,8 +1545,8 @@ function handleAdminEvents(event) {
   if (!button) return;
   const action = button.dataset.action;
   const id = Number(button.dataset.id);
-  const itemId = Number(button.dataset.itemId);
   const reviewId = Number(button.dataset.reviewId);
+  const lang = getCurrentLang();
 
   if (action === "save-inventory") {
     const stockInput = document.querySelector(
@@ -1313,7 +1567,7 @@ function handleAdminEvents(event) {
     renderMenu(getFilteredItems());
     renderCart();
     updateAdminPanel();
-    showToast("Inventory updated.");
+    showToast(lang === "en" ? "Inventory updated." : "የዕቃዎች ዝርዝር ተዘምኗል።");
   }
 
   if (action === "toggle-availability") {
@@ -1324,7 +1578,9 @@ function handleAdminEvents(event) {
     renderMenu(getFilteredItems());
     updateAdminPanel();
     showToast(
-      menuItem.stock > 0 ? "Item restocked." : "Item marked out of stock.",
+      menuItem.stock > 0
+        ? (lang === "en" ? "Item restocked." : "እቃው ተመልሷል።")
+        : (lang === "en" ? "Item marked out of stock." : "እቃው አልቋል ተብሏል።"),
     );
   }
 
@@ -1334,7 +1590,7 @@ function handleAdminEvents(event) {
       review.status = "approved";
       saveReviews();
       refreshReviewsUI();
-      showToast("Review approved.");
+      showToast(lang === "en" ? "Review approved." : "አስተያየቱ ጸድቋል።");
     }
   }
 
@@ -1342,7 +1598,7 @@ function handleAdminEvents(event) {
     reviews = reviews.filter((item) => item.id !== reviewId);
     saveReviews();
     refreshReviewsUI();
-    showToast("Review deleted.");
+    showToast(lang === "en" ? "Review deleted." : "አስተያየቱ ተሰርዟል።");
   }
 
   if (action === "mark-ready") {
@@ -1355,7 +1611,7 @@ function handleAdminEvents(event) {
       refreshOrderQueuePositions();
       updateAdminPanel();
       sendReadyNotification(order);
-      showToast(`Order #${order.number} marked ready.`);
+      showToast(lang === "en" ? `Order #${order.number} marked ready.` : `ትዕዛዝ #${order.number} ዝግጁ ተብሏል።`);
     }
   }
 }
@@ -1389,80 +1645,89 @@ function simulateActiveUsers() {
 
 window.addEventListener("DOMContentLoaded", () => {
   loadTheme();
-  renderMenu(getFilteredItems());
-  updateFilterButtons();
-  renderCart();
-  renderPublicReviews();
-  updateAdminPanel();
-  renderOrdersSidebar();
+  applyLanguageUI();
   resumeCustomerOrder();
 
   if ("Notification" in window && Notification.permission === "default") {
     Notification.requestPermission().catch(() => {});
   }
 
+  const langToggleBtn = document.getElementById("lang-toggle");
+  if (langToggleBtn) {
+    langToggleBtn.addEventListener("click", toggleLanguage);
+  }
+
   document.querySelectorAll(".filter-btn").forEach((button) => {
     button.addEventListener("click", () => filterMenu(button.dataset.category));
   });
 
-  document.getElementById("search-input").addEventListener("input", (event) => {
-    searchQuery = event.target.value.trim();
-    renderMenu(getFilteredItems());
-  });
+  const searchInput = document.getElementById("search-input");
+  if (searchInput) {
+    searchInput.addEventListener("input", (event) => {
+      searchQuery = event.target.value.trim();
+      renderMenu(getFilteredItems());
+    });
+  }
 
-  document.getElementById("promo-code").addEventListener("input", renderCart);
+  const promoInput = document.getElementById("promo-code");
+  if (promoInput) {
+    promoInput.addEventListener("input", renderCart);
+  }
 
-  document.getElementById("menu-grid").addEventListener("click", (event) => {
-    const rateButton = event.target.closest("[data-action='rate']");
-    if (rateButton) {
-      openReviewModal(Number(rateButton.dataset.id));
-      return;
-    }
+  const menuGrid = document.getElementById("menu-grid");
+  if (menuGrid) {
+    menuGrid.addEventListener("click", (event) => {
+      const rateButton = event.target.closest("[data-action='rate']");
+      if (rateButton) {
+        openReviewModal(Number(rateButton.dataset.id));
+        return;
+      }
 
-    const button = event.target.closest(".add-to-cart");
-    if (button) {
-      addToCart(Number(button.dataset.id));
-    }
-  });
+      const button = event.target.closest(".add-to-cart");
+      if (button) {
+        addToCart(Number(button.dataset.id));
+      }
+    });
+  }
 
-  document.getElementById("cart-toggle").addEventListener("click", openCart);
-  document.getElementById("close-cart").addEventListener("click", closeCart);
-  document.getElementById("cart-overlay").addEventListener("click", closeCart);
+  document.getElementById("cart-toggle")?.addEventListener("click", openCart);
+  document.getElementById("close-cart")?.addEventListener("click", closeCart);
+  document.getElementById("cart-overlay")?.addEventListener("click", closeCart);
   document
     .getElementById("checkout-btn")
-    .addEventListener("click", openCheckoutModal);
+    ?.addEventListener("click", openCheckoutModal);
   document
     .getElementById("close-modal")
-    .addEventListener("click", closeCheckoutModal);
+    ?.addEventListener("click", closeCheckoutModal);
   document
     .getElementById("cancel-checkout-btn")
-    .addEventListener("click", closeCheckoutModal);
+    ?.addEventListener("click", closeCheckoutModal);
   document
     .getElementById("send-telegram-btn")
-    .addEventListener("click", sendOrderToTelegram);
+    ?.addEventListener("click", sendOrderToTelegram);
   document
     .getElementById("theme-toggle")
-    .addEventListener("click", toggleTheme);
+    ?.addEventListener("click", toggleTheme);
 
   document
     .getElementById("admin-btn")
-    .addEventListener("click", openAdminLoginModal);
+    ?.addEventListener("click", openAdminLoginModal);
   document
     .getElementById("admin-login-submit")
-    .addEventListener("click", attemptAdminLogin);
+    ?.addEventListener("click", attemptAdminLogin);
   document
     .getElementById("close-admin-login")
-    .addEventListener("click", closeAdminLoginModal);
+    ?.addEventListener("click", closeAdminLoginModal);
   document
     .getElementById("close-admin")
-    .addEventListener("click", closeAdminPanel);
+    ?.addEventListener("click", closeAdminPanel);
   document
     .getElementById("admin-login-modal")
-    .addEventListener("click", (event) => {
+    ?.addEventListener("click", (event) => {
       if (event.target.id === "admin-login-modal") closeAdminLoginModal();
     });
 
-  document.getElementById("cart-items").addEventListener("click", (event) => {
+  document.getElementById("cart-items")?.addEventListener("click", (event) => {
     const button = event.target.closest("button");
     if (!button) return;
     const id = Number(button.dataset.id);
@@ -1474,38 +1739,41 @@ window.addEventListener("DOMContentLoaded", () => {
 
   document
     .getElementById("inventory-table-body")
-    .addEventListener("click", handleAdminEvents);
+    ?.addEventListener("click", handleAdminEvents);
   document
     .getElementById("review-moderation-list")
-    .addEventListener("click", handleAdminEvents);
+    ?.addEventListener("click", handleAdminEvents);
+  document
+    .getElementById("incoming-orders-table-body")
+    ?.addEventListener("click", handleAdminEvents);
   document
     .getElementById("orders-table-body")
-    .addEventListener("change", handleOrderStatusChange);
+    ?.addEventListener("change", handleOrderStatusChange);
 
   document
     .getElementById("submit-review-btn")
-    .addEventListener("click", saveReview);
+    ?.addEventListener("click", saveReview);
   document
     .getElementById("cancel-review-btn")
-    .addEventListener("click", closeReviewModal);
+    ?.addEventListener("click", closeReviewModal);
   document
     .getElementById("close-review-modal")
-    .addEventListener("click", closeReviewModal);
+    ?.addEventListener("click", closeReviewModal);
 
   document
     .getElementById("close-order-success")
-    .addEventListener("click", () => {
+    ?.addEventListener("click", () => {
       document.getElementById("order-success-modal").classList.remove("open");
     });
   document
     .getElementById("order-success-modal")
-    .addEventListener("click", (event) => {
+    ?.addEventListener("click", (event) => {
       if (event.target.id === "order-success-modal") {
         document.getElementById("order-success-modal").classList.remove("open");
       }
     });
 
-  document.getElementById("review-modal").addEventListener("click", (event) => {
+  document.getElementById("review-modal")?.addEventListener("click", (event) => {
     if (event.target.id === "review-modal") {
       closeReviewModal();
     }

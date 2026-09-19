@@ -4,7 +4,7 @@
   color-scheme: light;
   --bg: #f8fafc;
   --surface: #ffffff;
-  --surface-muted: #f8fafc;
+  --surface-muted: #f1f5f9;
   --text: #0f172a;
   --muted: #64748b;
   --border: #e2e8f0;
@@ -16,16 +16,16 @@
 
 body[data-theme="dark"] {
   color-scheme: dark;
-  --bg: #020617;
-  --surface: #0f172a;
-  --surface-muted: #111827;
-  --text: #f8fafc;
-  --muted: #94a3b8;
-  --border: #1e293b;
-  --accent: #34d399;
-  --accent-strong: #f8fafc;
-  --shadow: 0 16px 40px rgba(2, 6, 23, 0.45);
-  --overlay: rgba(2, 6, 23, 0.7);
+  --bg: #121212;
+  --surface: #1e1e1e;
+  --surface-muted: #282828;
+  --text: #ffffff;
+  --muted: #9ca3af;
+  --border: #333333;
+  --accent: #10b981;
+  --accent-strong: #10b981;
+  --shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  --overlay: rgba(0, 0, 0, 0.75);
 }
 
 * {
@@ -710,6 +710,90 @@ header {
   }
 }
 
+@media (max-width: 768px) {
+  .admin-panel {
+    padding: 0.5rem;
+  }
+
+  .admin-panel-shell {
+    padding: 1rem 0.75rem;
+    border-radius: 1rem;
+    max-height: 98vh;
+  }
+
+  .panel-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .panel-header button {
+    width: 100%;
+    text-align: center;
+  }
+
+  .metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
+  }
+
+  .panel-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .admin-section {
+    padding: 0.75rem;
+    overflow-x: hidden;
+  }
+
+  .table-panel {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -0.25rem;
+  }
+
+  .admin-table {
+    font-size: 0.85rem;
+    min-width: 520px;
+  }
+
+  .admin-table th,
+  .admin-table td {
+    padding: 0.55rem 0.45rem;
+  }
+
+  .admin-input {
+    width: 4.2rem;
+    min-width: 4.2rem;
+    padding: 0.35rem 0.4rem;
+    font-size: 0.85rem;
+  }
+
+  .admin-price-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+  }
+
+  .admin-button-group {
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .admin-button {
+    padding: 0.45rem 0.65rem;
+    font-size: 0.8rem;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 640px) {
   header {
     padding: 1.2rem 1rem;
@@ -746,3 +830,130 @@ header {
     padding: 0.9rem 1rem;
   }
 }
+
+/* ==========================================================================
+   Dark Mode High-Contrast Overrides
+   ========================================================================== */
+body[data-theme="dark"] {
+  background-color: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+body[data-theme="dark"] .text-slate-900,
+body[data-theme="dark"] .text-slate-800,
+body[data-theme="dark"] .text-slate-700 {
+  color: #ffffff !important;
+}
+
+body[data-theme="dark"] .text-slate-500,
+body[data-theme="dark"] .text-slate-600,
+body[data-theme="dark"] .text-slate-400 {
+  color: #d1d5db !important;
+}
+
+body[data-theme="dark"] .bg-white,
+body[data-theme="dark"] .bg-white\/90 {
+  background-color: var(--surface) !important;
+  color: var(--text) !important;
+}
+
+body[data-theme="dark"] .bg-slate-50,
+body[data-theme="dark"] .bg-slate-50\/90,
+body[data-theme="dark"] .bg-slate-100 {
+  background-color: var(--bg) !important;
+}
+
+body[data-theme="dark"] .border-slate-200,
+body[data-theme="dark"] .border-slate-100 {
+  border-color: var(--border) !important;
+}
+
+body[data-theme="dark"] input,
+body[data-theme="dark"] select,
+body[data-theme="dark"] textarea {
+  background-color: var(--surface-muted) !important;
+  color: #ffffff !important;
+  border-color: var(--border) !important;
+}
+
+body[data-theme="dark"] .admin-panel-shell,
+body[data-theme="dark"] .modal-card,
+body[data-theme="dark"] .cart-drawer,
+body[data-theme="dark"] .orders-sidebar,
+body[data-theme="dark"] .menu-card,
+body[data-theme="dark"] .admin-card,
+body[data-theme="dark"] .admin-section,
+body[data-theme="dark"] .review-card,
+body[data-theme="dark"] .promo-block,
+body[data-theme="dark"] .order-status-card {
+  background-color: var(--surface) !important;
+  color: #ffffff !important;
+  border-color: var(--border) !important;
+}
+
+body[data-theme="dark"] header {
+  background-color: rgba(30, 30, 30, 0.92) !important;
+  border-color: var(--border) !important;
+}
+
+/* Clear, vibrant 'Add' button styling for dark mode & light mode */
+.add-to-cart {
+  background-color: #0f172a;
+  color: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.add-to-cart:hover:not(:disabled) {
+  background-color: #059669 !important;
+  color: #ffffff !important;
+}
+
+body[data-theme="dark"] .add-to-cart {
+  background-color: #10b981 !important;
+  color: #ffffff !important;
+  font-weight: 700;
+}
+
+body[data-theme="dark"] .add-to-cart:hover:not(:disabled) {
+  background-color: #34d399 !important;
+  color: #064e3b !important;
+}
+
+body[data-theme="dark"] .theme-toggle,
+body[data-theme="dark"] .quick-action,
+body[data-theme="dark"] .filter-btn {
+  background-color: var(--surface) !important;
+  color: #ffffff !important;
+  border-color: var(--border) !important;
+}
+
+body[data-theme="dark"] .filter-btn.active {
+  background-color: var(--accent) !important;
+  color: #ffffff !important;
+  border-color: var(--accent) !important;
+}
+
+body[data-theme="dark"] .admin-button,
+body[data-theme="dark"] .review-card-actions button {
+  background-color: #10b981 !important;
+  color: #ffffff !important;
+}
+
+body[data-theme="dark"] .admin-button.secondary,
+body[data-theme="dark"] .review-card-actions button.secondary {
+  background-color: var(--surface-muted) !important;
+  color: #ffffff !important;
+  border: 1px solid var(--border);
+}
+
+body[data-theme="dark"] .admin-table th {
+  color: #f3f4f6 !important;
+  border-color: var(--border) !important;
+  background-color: var(--surface-muted) !important;
+}
+
+body[data-theme="dark"] .admin-table td {
+  color: #f3f4f6 !important;
+  border-color: var(--border) !important;
+}
+

@@ -10,7 +10,7 @@
   <body
     class="min-h-screen bg-slate-50 text-slate-900 pb-20 transition-colors duration-300"
   >
-    <div class="promo-banner px-6 sm:px-12">🎓 ተማሪ ቅናሽ! STUDENT10 በመጠቀም 10% ቅናሽ ያገኛሉ</div>
+    <div id="promo-banner" class="promo-banner px-6 sm:px-12" data-i18n="promoBanner">🎓 ተማሪ ቅናሽ! STUDENT10 በመጠቀም 10% ቅናሽ ያገኛሉ</div>
 
     <header
       class="sticky top-0 z-20 border-b border-slate-200 bg-white/90 py-6 px-6 sm:px-12 shadow-sm backdrop-blur"
@@ -19,33 +19,45 @@
         class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 sm:flex-row"
       >
         <div class="text-center sm:text-left">
-          <h1 class="text-3xl font-extrabold text-slate-900">
+          <h1 id="header-title" class="text-3xl font-extrabold text-slate-900" data-i18n="appTitle">
             ሀበሻ ሬስቶራንት እና ባር
           </h1>
-          <p class="mt-2 text-slate-500">የተመረጡ የባህል ምግቦች እና መጠጦች</p>
+          <p id="header-subtitle" class="mt-2 text-slate-500" data-i18n="appSubtitle">የተመረጡ የባህል ምግቦች እና መጠጦች</p>
         </div>
 
         <div
           class="flex flex-wrap items-center justify-center gap-2 sm:justify-end"
         >
           <a
+            id="call-link"
             href="tel:+251927146888"
             class="quick-action rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-semibold shadow-sm"
+            data-i18n="callUs"
           >
             📞 ይደውሉ
           </a>
           <a
+            id="map-link"
             href="https://www.google.com/maps/search/?api=1&query=Habesha+Gourmet+Bistro"
             target="_blank"
             rel="noopener noreferrer"
             class="quick-action rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-semibold shadow-sm"
+            data-i18n="locationMap"
           >
             📍 የአድራሻ ካርታ
           </a>
           <button
+            id="lang-toggle"
+            type="button"
+            class="theme-toggle rounded-full border border-slate-200 bg-white px-4 py-2 font-semibold shadow-sm"
+          >
+            🌐 English
+          </button>
+          <button
             id="admin-btn"
             type="button"
             class="theme-toggle rounded-full border border-slate-200 bg-white px-4 py-2 font-semibold shadow-sm"
+            data-i18n="adminBtn"
           >
             🔒 Admin
           </button>
@@ -73,6 +85,7 @@
                 type="search"
                 placeholder="ምግብ ፈልግ..."
                 class="w-full border-0 bg-transparent outline-none"
+                data-i18n-placeholder="searchPlaceholder"
               />
             </label>
 
@@ -84,6 +97,7 @@
                 type="button"
                 class="filter-btn rounded-full border border-slate-200 bg-white px-5 py-2 font-semibold"
                 data-category="All"
+                data-i18n="catAll"
               >
                 ሁሉም
               </button>
@@ -91,6 +105,7 @@
                 type="button"
                 class="filter-btn rounded-full border border-slate-200 bg-white px-5 py-2 font-semibold"
                 data-category="የፆም"
+                data-i18n="catFasting"
               >
                 የፆም
               </button>
@@ -98,6 +113,7 @@
                 type="button"
                 class="filter-btn rounded-full border border-slate-200 bg-white px-5 py-2 font-semibold"
                 data-category="የፍስክ"
+                data-i18n="catNonFasting"
               >
                 የፍስክ
               </button>
@@ -105,6 +121,7 @@
                 type="button"
                 class="filter-btn rounded-full border border-slate-200 bg-white px-5 py-2 font-semibold"
                 data-category="መጠጥ"
+                data-i18n="catBeverage"
               >
                 መጠጦች
               </button>
@@ -119,7 +136,7 @@
           </div>
 
           <section id="public-reviews-section" class="mt-12">
-            <h2 class="mb-6 text-2xl font-extrabold">የህዝብ ግምገማዎች</h2>
+            <h2 id="reviews-title" class="mb-6 text-2xl font-extrabold" data-i18n="reviewsTitle">የህዝብ ግምገማዎች</h2>
             <div
               id="public-reviews"
               class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2"
@@ -130,7 +147,7 @@
         <aside class="orders-column">
           <div class="sidebar-sticky">
             <section id="orders-sidebar" class="orders-sidebar lg:pb-28">
-              <h2 class="mb-4 text-xl font-extrabold">የእርስዎ ትዕዛዝ</h2>
+              <h2 id="sidebar-title" class="mb-4 text-xl font-extrabold" data-i18n="yourOrder">የእርስዎ ትዕዛዝ</h2>
               <div id="orders-sidebar-body" class="w-full overflow-x-auto"></div>
             </section>
           </div>
@@ -142,8 +159,8 @@
       <div class="admin-panel-shell">
         <div class="panel-header">
           <div>
-            <h2 class="text-2xl font-extrabold">Admin Analytics Dashboard</h2>
-            <p class="mt-2 text-slate-500">
+            <h2 class="text-2xl font-extrabold" data-i18n="adminDashboardTitle">Admin Analytics Dashboard</h2>
+            <p class="mt-2 text-slate-500" data-i18n="adminDashboardDesc">
               Inventory, orders, reviews, and profitability in one secure
               control panel.
             </p>
@@ -152,6 +169,7 @@
             id="close-admin"
             type="button"
             class="rounded-full border border-slate-200 bg-white px-4 py-2 font-semibold shadow-sm"
+            data-i18n="closeAdmin"
           >
             ✕ Close Admin
           </button>
@@ -159,30 +177,30 @@
 
         <div class="metrics-grid">
           <div class="admin-card">
-            <p class="stat-label">Active Visitors</p>
+            <p class="stat-label" data-i18n="activeVisitors">Active Visitors</p>
             <p id="active-users" class="stat-value">0</p>
           </div>
           <div class="admin-card">
-            <p class="stat-label">Total Revenue</p>
+            <p class="stat-label" data-i18n="totalRevenue">Total Revenue</p>
             <p id="total-revenue" class="stat-value">0 ብር</p>
           </div>
           <div class="admin-card">
-            <p class="stat-label">Total Cost</p>
+            <p class="stat-label" data-i18n="totalCost">Total Cost</p>
             <p id="total-cost" class="stat-value">0 ብር</p>
           </div>
           <div class="admin-card">
-            <p class="stat-label">Net Profit</p>
+            <p class="stat-label" data-i18n="netProfit">Net Profit</p>
             <p id="net-profit" class="stat-value">0 ብር</p>
           </div>
           <div class="admin-card">
-            <p class="stat-label">Profit Margin</p>
+            <p class="stat-label" data-i18n="profitMargin">Profit Margin</p>
             <p id="profit-margin" class="stat-value">0%</p>
           </div>
         </div>
 
         <div class="panel-grid">
           <section class="admin-section">
-            <h3 class="section-title">Inventory Management</h3>
+            <h3 class="section-title" data-i18n="inventoryMgmt">Inventory Management</h3>
             <div class="table-panel">
               <table class="admin-table">
                 <thead>
@@ -200,7 +218,7 @@
           </section>
 
           <section class="admin-section">
-            <h3 class="section-title">Order Management</h3>
+            <h3 class="section-title" data-i18n="orderMgmt">Order Management</h3>
             <div class="table-panel">
               <table class="admin-table">
                 <thead>
@@ -219,7 +237,7 @@
         </div>
 
         <section class="admin-section">
-          <h3 class="section-title">Incoming Orders</h3>
+          <h3 class="section-title" data-i18n="incomingOrders">Incoming Orders</h3>
           <div class="table-panel">
             <table class="admin-table">
               <thead>
@@ -239,18 +257,18 @@
 
         <div class="panel-grid">
           <section class="admin-section">
-            <h3 class="section-title">Top Selling Items</h3>
+            <h3 class="section-title" data-i18n="topSelling">Top Selling Items</h3>
             <div id="top-selling-list" class="admin-list"></div>
           </section>
 
           <section class="admin-section">
-            <h3 class="section-title">Least Selling Items</h3>
+            <h3 class="section-title" data-i18n="leastSelling">Least Selling Items</h3>
             <div id="least-selling-list" class="admin-list"></div>
           </section>
         </div>
 
         <section class="admin-section">
-          <h3 class="section-title">Review Moderation</h3>
+          <h3 class="section-title" data-i18n="reviewModeration">Review Moderation</h3>
           <div id="review-moderation-list" class="admin-list"></div>
         </section>
       </div>
