@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="am" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Habesha Gourmet Bistro | ሙሉ ሜኑ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" crossorigin src="./assets/index-b-86E6QQ.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-DTBqPKFV.css">
+  </head>
+  <body
+    class="min-h-screen bg-slate-50 text-slate-900 pb-20 transition-colors duration-300"
+  >
+    <div class="promo-banner px-6 sm:px-12">
+      🎓 ተማሪ ቅናሽ! STUDENT10 በመጠቀም 10% ቅናሽ ያገኛሉ
+    </div>
+
+    <header
+      class="sticky top-0 z-20 border-b border-slate-200 bg-white/90 py-6 px-6 sm:px-12 shadow-sm backdrop-blur"
+    >
+      <div
+        class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 sm:flex-row"
+      >
+        <div class="text-center sm:text-left">
+          <h1 class="text-3xl font-extrabold text-slate-900">
+            ሀበሻ ሬስቶራንት እና ባር
+          </h1>
+          <p class="mt-2 text-slate-500">የተመረጡ የባህል ምግቦች እና መጠጦች</p>
+        </div>
+
+        <div
+          class="flex flex-wrap items-center justify-center gap-2 sm:justify-end"
+        >
+          <a
+            href="tel:+251927146888"
+            class="quick-action rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-semibold shadow-sm"
+          >
+            📞 ይደውሉ
+          </a>
+          <a
+            href="https://www.google.com/maps/search/?api=1&query=Habesha+Gourmet+Bistro"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="quick-action rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-semibold shadow-sm"
+          >
+            📍 የአድራሻ ካርታ
+          </a>
+          <button
+            id="language-toggle"
+            type="button"
+            class="theme-toggle rounded-full border border-slate-200 bg-white px-4 py-2 font-semibold shadow-sm"
+          >
+            አማ / EN
+          </button>
+          <button
+            id="qr-menu-btn"
+            type="button"
+            class="theme-toggle rounded-full border border-slate-200 bg-white px-4 py-2 font-semibold shadow-sm"
+          >
+            📱 QR
+          </button>
+          <button
+            id="admin-btn"
+            type="button"
+            class="theme-toggle rounded-full border border-slate-200 bg-white px-4 py-2 font-semibold shadow-sm"
+          >
+            🔒 Admin
+          </button>
+          <button
+            id="theme-toggle"
+            type="button"
+            class="theme-toggle rounded-full border border-slate-200 bg-white px-4 py-2 font-semibold shadow-sm"
+          >
+            🌙 Dark
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="relative z-0 mx-auto max-w-7xl px-6 sm:px-12 py-8">
+      <div class="app-grid">
+        <div class="space-y-6 menu-column">
+          <div class="my-6 flex flex-col gap-4">
+            <div class="search-toolbar">
+              <label
+                class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm"
+              >
+                <span class="text-lg">🔍</span>
+                <input
+                  id="search-input"
+                  type="search"
+                  placeholder="ምግብ ፈልግ..."
+                  class="w-full border-0 bg-transparent outline-none"
+                />
+              </label>
+              <label class="sort-wrap">
+                <span>Sort</span>
+                <select id="sort-menu-select" class="sort-select">
+                  <option value="featured">Featured</option>
+                  <option value="price-asc">Price: Low to High</option>
+                  <option value="price-desc">Price: High to Low</option>
+                </select>
+              </label>
+            </div>
+
+            <div
+              id="filter-container"
+              class="sticky top-24 z-10 flex flex-wrap justify-center gap-3 rounded-2xl bg-slate-50/90 py-4"
+            >
+              <button
+                type="button"
+                class="filter-btn rounded-full border border-slate-200 bg-white px-5 py-2 font-semibold"
+                data-category="All"
+              >
+                🍽️ ሁሉም
+              </button>
+              <button
+                type="button"
+                class="filter-btn rounded-full border border-slate-200 bg-white px-5 py-2 font-semibold"
+                data-category="የፆም"
+              >
+                🥘 የፆም
+              </button>
+              <button
+                type="button"
+                class="filter-btn rounded-full border border-slate-200 bg-white px-5 py-2 font-semibold"
+                data-category="የፍስክ"
+              >
+                🍔 የፍስክ
+              </button>
+              <button
+                type="button"
+                class="filter-btn rounded-full border border-slate-200 bg-white px-5 py-2 font-semibold"
+                data-category="መጠጥ"
+              >
+                🥤 መጠጦች
+              </button>
+            </div>
+          </div>
+
+          <div
+            id="menu-grid"
+            class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2"
+          >
+            <!-- Menu items injected here -->
+          </div>
+
+          <section id="public-reviews-section" class="mt-12">
+            <h2 class="mb-6 text-2xl font-extrabold">የህዝብ ግምገማዎች</h2>
+            <div
+              id="public-reviews"
+              class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2"
+            ></div>
+          </section>
+        </div>
+
+        <aside class="orders-column">
+          <div class="sidebar-sticky">
+            <section id="orders-sidebar" class="orders-sidebar lg:pb-28">
+              <h2 class="mb-4 text-xl font-extrabold">የእርስዎ ትዕዛዝ</h2>
+              <div
+                id="orders-sidebar-body"
+                class="w-full overflow-x-auto"
+              ></div>
+            </section>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <section id="admin-panel" class="admin-panel hidden">
+      <div class="admin-panel-shell">
+        <div class="panel-header">
+          <div>
+            <h2 class="text-2xl font-extrabold">Admin Analytics Dashboard</h2>
+            <p class="mt-2 text-slate-500">
+              Inventory, orders, reviews, and profitability in one secure
+              control panel.
+            </p>
+          </div>
+          <button
+            id="close-admin"
+            type="button"
+            class="rounded-full border border-slate-200 bg-white px-4 py-2 font-semibold shadow-sm"
+          >
+            ✕ Close Admin
+          </button>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="admin-card">
+            <p id="active-users-label" class="stat-label">Active Visitors</p>
+            <p id="active-users" class="stat-value">0</p>
+          </div>
+          <div class="admin-card">
+            <p id="total-revenue-label" class="stat-label">Total Revenue</p>
+            <p id="total-revenue" class="stat-value">0 ብር</p>
+          </div>
+          <div class="admin-card">
+            <p id="total-cost-label" class="stat-label">Total Cost</p>
+            <p id="total-cost" class="stat-value">0 ብር</p>
+          </div>
+          <div class="admin-card">
+            <p id="net-profit-label" class="stat-label">Net Profit</p>
+            <p id="net-profit" class="stat-value">0 ብር</p>
+          </div>
+          <div class="admin-card">
+            <p id="profit-margin-label" class="stat-label">Profit Margin</p>
+            <p id="profit-margin" class="stat-value">0%</p>
+          </div>
+        </div>
+
+        <section class="admin-section chart-section">
+          <div class="section-header">
+            <h3 class="section-title">Sales Performance</h3>
+            <div class="chart-switcher">
+              <button
+                type="button"
+                class="chart-range-btn active"
+                data-range="day"
+              >
+                Daily
+              </button>
+              <button type="button" class="chart-range-btn" data-range="week">
+                Weekly
+              </button>
+              <button type="button" class="chart-range-btn" data-range="month">
+                Monthly
+              </button>
+            </div>
+          </div>
+          <div
+            id="sales-chart-bars"
+            class="sales-chart-bars"
+            aria-label="sales chart"
+          ></div>
+        </section>
+
+        <div class="panel-grid">
+          <section class="admin-section">
+            <h3 class="section-title">Inventory Management</h3>
+            <div class="table-panel">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Stock</th>
+                    <th>Availability</th>
+                    <th>Sell / Cost</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="inventory-table-body"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="admin-section">
+            <h3 class="section-title">Order Management</h3>
+            <div class="table-panel">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Order</th>
+                    <th>Status</th>
+                    <th>Queue</th>
+                    <th>Customer</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody id="orders-table-body"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <section class="admin-section">
+          <h3 class="section-title">Incoming Orders</h3>
+          <div class="table-panel">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Customer</th>
+                  <th>Items</th>
+                  <th>Total</th>
+                  <th>Timestamp</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="incoming-orders-table-body"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <div class="panel-grid">
+          <section class="admin-section">
+            <h3 class="section-title">Top Selling Items</h3>
+            <div id="top-selling-list" class="admin-list"></div>
+          </section>
+
+          <section class="admin-section">
+            <h3 class="section-title">Least Selling Items</h3>
+            <div id="least-selling-list" class="admin-list"></div>
+          </section>
+        </div>
+
+        <section class="admin-section">
+          <h3 class="section-title">Review Moderation</h3>
+          <div id="review-moderation-list" class="admin-list"></div>
+        </section>
+      </div>
+    </section>
+
+    <div id="admin-login-modal" class="modal-backdrop">
+      <div class="modal-card admin-login-card">
+        <div
+          class="flex items-center justify-between border-b border-slate-200 p-5"
+        >
+          <h3 class="text-xl font-bold">Admin Login</h3>
+          <button
+            id="close-admin-login"
+            type="button"
+            class="rounded-full border border-slate-200 px-3 py-2 text-sm"
+          >
+            ✕
+          </button>
+        </div>
+        <div class="p-5 space-y-4">
+          <p>
+            Enter the secure admin passcode to access analytics and order
+            controls.
+          </p>
+          <label class="block text-sm font-medium">
+            <span class="mb-1 block">Passcode</span>
+            <input
+              id="admin-password"
+              type="password"
+              class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 outline-none"
+            />
+          </label>
+          <button
+            id="admin-login-submit"
+            type="button"
+            class="w-full rounded-xl bg-emerald-600 px-4 py-3 font-semibold text-white"
+          >
+            Unlock Dashboard
+          </button>
+          <p class="text-sm text-slate-500 text-muted">
+            Demo passcode: AdminPass2026
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <button
+      id="cart-toggle"
+      type="button"
+      class="floating-cart fixed bottom-6 right-6 rounded-full bg-emerald-600 p-4 text-white shadow-2xl"
+    >
+      🛒 <span id="cart-count">0</span>
+    </button>
+
+    <div id="cart-overlay" class="cart-overlay"></div>
+    <aside id="cart-drawer" class="cart-drawer">
+      <div
+        class="flex items-center justify-between border-b border-slate-200 p-5"
+      >
+        <h2 class="text-xl font-bold">የእርስዎ ትዕዛዝ</h2>
+        <button
+          id="close-cart"
+          type="button"
+          class="rounded-full border border-slate-200 px-3 py-2 text-sm"
+        >
+          ✕
+        </button>
+      </div>
+      <div id="cart-items" class="flex-1 overflow-y-auto p-5"></div>
+      <div class="border-t border-slate-200 p-5">
+        <div class="promo-block">
+          <label class="mb-1 block text-sm font-medium">Promo Code</label>
+          <input
+            id="promo-code"
+            type="text"
+            placeholder="STUDENT10"
+            class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 outline-none"
+          />
+          <p id="promo-message" class="promo-message">
+            Enter STUDENT10 for 10% off
+          </p>
+        </div>
+
+        <div
+          class="mb-4 flex items-center justify-between text-lg font-semibold"
+        >
+          <span>ጠቅላላ</span>
+          <span id="cart-total">0 ብር</span>
+        </div>
+        <div
+          class="mb-4 flex items-center justify-between text-sm text-slate-500"
+        >
+          <span>የተቀነሰ ጠቅላላ</span>
+          <span id="discounted-total">0 ብር</span>
+        </div>
+
+        <div id="order-status-card" class="order-status-card hidden">
+          <div class="status-badge">Preparing</div>
+          <div id="prep-time-text" class="mt-2 text-sm"></div>
+          <div id="countdown-text" class="mt-1 text-xl font-bold"></div>
+        </div>
+
+        <button
+          id="checkout-btn"
+          type="button"
+          class="mt-4 w-full rounded-xl bg-slate-900 px-4 py-3 font-semibold text-white"
+        >
+          Proceed to Checkout
+        </button>
+      </div>
+    </aside>
+
+    <div id="checkout-modal" class="modal-backdrop">
+      <div class="modal-card">
+        <div
+          class="flex items-center justify-between border-b border-slate-200 p-5"
+        >
+          <h3 class="text-xl font-bold">Checkout</h3>
+          <button
+            id="close-modal"
+            type="button"
+            class="rounded-full border border-slate-200 px-3 py-2 text-sm"
+          >
+            ✕
+          </button>
+        </div>
+        <form id="checkout-form" class="space-y-4 p-5">
+          <label class="block text-sm font-medium">
+            <span class="mb-1 block">ስም</span>
+            <input
+              id="checkout-name"
+              type="text"
+              name="name"
+              required
+              class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 outline-none"
+            />
+          </label>
+          <label class="block text-sm font-medium">
+            <span class="mb-1 block">ስልክ</span>
+            <input
+              id="checkout-phone"
+              type="tel"
+              name="phone"
+              required
+              class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 outline-none"
+            />
+          </label>
+          <label class="block text-sm font-medium">
+            <span class="mb-1 block">ሰሌዳ / የማድረሻ አድራሻ</span>
+            <input
+              id="checkout-address"
+              type="text"
+              name="address"
+              required
+              class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 outline-none"
+            />
+          </label>
+
+          <div class="payment-options">
+            <p class="payment-title">Payment Method</p>
+            <label class="payment-option">
+              <input
+                type="radio"
+                name="payment-method"
+                value="TeleBirr"
+                checked
+              />
+              <span>📱 TeleBirr</span>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="payment-method" value="CBE Birr" />
+              <span>🏦 CBE Birr</span>
+            </label>
+            <label class="payment-option">
+              <input
+                type="radio"
+                name="payment-method"
+                value="Cash on Delivery"
+              />
+              <span>💵 Cash on Delivery</span>
+            </label>
+          </div>
+        </form>
+        <div class="flex gap-3 border-t border-slate-200 p-5">
+          <button
+            id="send-telegram-btn"
+            type="button"
+            class="flex-1 rounded-xl bg-emerald-600 px-4 py-3 font-semibold text-white"
+          >
+            Send Order via Admin
+          </button>
+          <button
+            id="cancel-checkout-btn"
+            type="button"
+            class="rounded-xl border border-slate-200 px-4 py-3 font-semibold"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="qr-modal" class="modal-backdrop">
+      <div class="modal-card">
+        <div
+          class="flex items-center justify-between border-b border-slate-200 p-5"
+        >
+          <h3 class="text-xl font-bold">Menu QR Code</h3>
+          <button
+            id="close-qr-modal"
+            type="button"
+            class="rounded-full border border-slate-200 px-3 py-2 text-sm"
+          >
+            ✕
+          </button>
+        </div>
+        <div class="p-5 text-center">
+          <img
+            id="qr-code-image"
+            alt="Restaurant menu QR code"
+            class="mx-auto mb-4 h-64 w-64 rounded-2xl border border-slate-200 bg-white p-3"
+          />
+          <p class="text-sm text-slate-500">
+            Scan to open the restaurant menu on your phone.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div id="review-modal" class="modal-backdrop">
+      <div class="modal-card">
+        <div
+          class="flex items-center justify-between border-b border-slate-200 p-5"
+        >
+          <h3 class="text-xl font-bold">Write a Review</h3>
+          <button
+            id="close-review-modal"
+            type="button"
+            class="rounded-full border border-slate-200 px-3 py-2 text-sm"
+          >
+            ✕
+          </button>
+        </div>
+        <div class="p-5">
+          <p id="review-item-name" class="mb-3 font-semibold"></p>
+          <label class="mb-3 block text-sm font-medium">
+            <span class="mb-1 block">ስም (Name)</span>
+            <input
+              id="review-name"
+              type="text"
+              class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 outline-none"
+              placeholder="Your name"
+            />
+          </label>
+          <div id="review-stars" class="review-stars"></div>
+          <textarea
+            id="review-comment"
+            rows="4"
+            class="review-textarea"
+            placeholder="Share your experience..."
+          ></textarea>
+          <div class="review-actions">
+            <button
+              id="submit-review-btn"
+              type="button"
+              class="rounded-xl bg-emerald-600 px-4 py-3 font-semibold text-white"
+            >
+              Save Review
+            </button>
+            <button
+              id="cancel-review-btn"
+              type="button"
+              class="rounded-xl border border-slate-200 px-4 py-3 font-semibold"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="order-success-modal" class="modal-backdrop">
+      <div class="modal-card">
+        <div
+          class="flex items-center justify-between border-b border-slate-200 p-5"
+        >
+          <h3 class="text-xl font-bold">ትዕዛዝዎ ተቀብለናል</h3>
+          <button
+            id="close-order-success"
+            type="button"
+            class="rounded-full border border-slate-200 px-3 py-2 text-sm"
+          >
+            ✕
+          </button>
+        </div>
+        <div class="p-5">
+          <div id="success-status-badge" class="status-badge preparing mb-4">
+            በዝግጅት ላይ
+          </div>
+
+          <p class="mb-4 text-slate-600">
+            ምግብዎ በ <span id="success-delivery-time">25</span> ደቂቃ ውስጥ ይደርሳል
+          </p>
+
+          <div class="promo-block mb-4">
+            <p class="font-semibold">
+              የትዕዛዝ እርከን: <span id="success-order-number"></span>
+            </p>
+            <ul id="success-order-items" class="mt-2 space-y-1 text-sm"></ul>
+            <p class="mt-2 font-bold">
+              ጠቅላላ: <span id="success-order-total"></span> ብር
+            </p>
+          </div>
+
+          <div class="order-status-card">
+            <div id="success-countdown-badge" class="status-badge preparing">
+              በዝግጅት ላይ
+            </div>
+            <div id="success-prep-text" class="mt-2 text-sm"></div>
+            <div
+              id="success-countdown-text"
+              class="mt-1 text-xl font-bold"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  </body>
+</html>

@@ -16,18 +16,6 @@
 
 body[data-theme="dark"] {
   color-scheme: dark;
-<<<<<<< HEAD
-  --bg: #121212;
-  --surface: #1e1e1e;
-  --surface-muted: #282828;
-  --text: #ffffff;
-  --muted: #9ca3af;
-  --border: #333333;
-  --accent: #10b981;
-  --accent-strong: #10b981;
-  --shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
-  --overlay: rgba(0, 0, 0, 0.75);
-=======
   background-color: #121212 !important;
   color: #ffffff !important;
   --bg: #121212;
@@ -155,7 +143,6 @@ body[data-theme="dark"] .status-badge.ready {
 body[data-theme="dark"] .status-badge.completed {
   background: rgba(148, 163, 184, 0.2);
   color: #e2e8f0 !important;
->>>>>>> a04f5e9 (Fix menu favorites and image updates)
 }
 
 * {
@@ -1045,66 +1032,43 @@ header {
 
 @media (max-width: 768px) {
   .admin-panel {
-<<<<<<< HEAD
     padding: 0.5rem;
   }
 
   .admin-panel-shell {
+    max-height: 98vh;
     padding: 1rem 0.75rem;
     border-radius: 1rem;
-    max-height: 98vh;
-=======
-    padding: 0.75rem;
-  }
-
-  .admin-panel-shell {
-    max-height: 95vh;
-    padding: 1rem;
-    border-radius: 1rem;
->>>>>>> a04f5e9 (Fix menu favorites and image updates)
   }
 
   .panel-header {
     flex-direction: column;
     align-items: flex-start;
-<<<<<<< HEAD
     gap: 0.75rem;
   }
 
   .panel-header button {
     width: 100%;
     text-align: center;
-=======
->>>>>>> a04f5e9 (Fix menu favorites and image updates)
   }
 
   .metrics-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-<<<<<<< HEAD
     gap: 0.6rem;
-=======
->>>>>>> a04f5e9 (Fix menu favorites and image updates)
   }
 
   .panel-grid {
     grid-template-columns: 1fr;
-<<<<<<< HEAD
     gap: 1rem;
-=======
->>>>>>> a04f5e9 (Fix menu favorites and image updates)
   }
 
   .admin-section {
     padding: 0.75rem;
-<<<<<<< HEAD
     overflow-x: hidden;
-=======
->>>>>>> a04f5e9 (Fix menu favorites and image updates)
   }
 
   .table-panel {
     overflow-x: auto;
-<<<<<<< HEAD
     -webkit-overflow-scrolling: touch;
     margin: 0 -0.25rem;
   }
@@ -1127,56 +1091,33 @@ header {
   }
 
   .admin-price-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.2rem;
-=======
-  }
-
-  .admin-table {
-    min-width: 620px;
-  }
-
-  .admin-price-row {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.35rem;
-  }
-
-  .admin-input {
-    width: 100%;
-    min-width: 0;
->>>>>>> a04f5e9 (Fix menu favorites and image updates)
+    gap: 0.2rem;
   }
 
   .admin-button-group {
     flex-direction: column;
-<<<<<<< HEAD
     gap: 0.35rem;
   }
 
   .admin-button {
     padding: 0.45rem 0.65rem;
     font-size: 0.8rem;
-=======
   }
 
   .admin-button-group button {
->>>>>>> a04f5e9 (Fix menu favorites and image updates)
     width: 100%;
   }
 }
 
-<<<<<<< HEAD
 @media (max-width: 480px) {
   .metrics-grid {
     grid-template-columns: 1fr;
   }
 }
 
-=======
->>>>>>> a04f5e9 (Fix menu favorites and image updates)
 @media (max-width: 640px) {
   .search-toolbar {
     grid-template-columns: 1fr;
@@ -1353,4 +1294,3 @@ body[data-theme="dark"] .admin-table td {
   color: #f3f4f6 !important;
   border-color: var(--border) !important;
 }
-
