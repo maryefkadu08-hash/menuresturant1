@@ -10,6 +10,7 @@ const STORAGE_KEYS = {
 
 const ADMIN_PASSWORD = "AdminPass2026";
 const telegramUser = "miki7589";
+const FALLBACK_IMAGE = "foodimage/images.jpg";
 const defaultMenuItems = [
   {
     id: 1,
@@ -121,6 +122,36 @@ const defaultMenuItems = [
     prepEstimate: 2,
     img: "image/ar.jpeg",
   },
+  {
+    id: 14,
+    name: "juce",
+    category: "መጠጥ",
+    price: 80,
+    costPrice: 45,
+    stock: 10,
+    prepEstimate: 5,
+    img: "image/juce.jpg",
+  },
+  {
+    id: 15,
+    name: "coca",
+    category: "መጠጥ",
+    price: 60,
+    costPrice: 35,
+    stock: 12,
+    prepEstimate: 4,
+    img: "image/coca.jpeg",
+  },
+  {
+    id: 16,
+    name: "avocado",
+    category: "መጠጥ",
+    price: 70,
+    costPrice: 40,
+    stock: 8,
+    prepEstimate: 6,
+    img: "image/avocado.jpeg",
+  },
 ];
 
 let menuItems = loadMenuItems();
@@ -138,12 +169,60 @@ let countdownStartedAt = null;
 let activeOrderId = null;
 let activeUsers = getRandomInt(12, 40);
 
+function resolveMenuImage(imagePath) {
+  const normalized = typeof imagePath === "string" ? imagePath.trim() : "";
+  if (!normalized) return FALLBACK_IMAGE;
+
+  if (normalized.startsWith("http://") || normalized.startsWith("https://")) {
+    return normalized;
+  }
+
+  return normalized.includes("/") || normalized.includes("\\")
+    ? normalized
+    : `${FALLBACK_IMAGE}`;
+}
+
+function normalizeMenuItems(items) {
+  if (!Array.isArray(items)) {
+    return defaultMenuItems.map((item) => ({
+      ...item,
+      img: resolveMenuImage(item.img),
+    }));
+  }
+
+  const merged = defaultMenuItems.map((defaultItem) => {
+    const savedItem = items.find((item) => item.id === defaultItem.id) || {};
+    return {
+      ...defaultItem,
+      ...savedItem,
+      id: defaultItem.id,
+      img: resolveMenuImage(savedItem.img || defaultItem.img),
+    };
+  });
+
+  const extraItems = items
+    .filter(
+      (item) =>
+        !defaultMenuItems.some((defaultItem) => defaultItem.id === item.id),
+    )
+    .map((item) => ({
+      ...item,
+      img: resolveMenuImage(item.img),
+    }));
+
+  return [...merged, ...extraItems];
+}
+
 function loadMenuItems() {
   try {
     const saved = localStorage.getItem(STORAGE_KEYS.menu);
-    return saved ? JSON.parse(saved) : defaultMenuItems;
+    const parsed = saved ? JSON.parse(saved) : null;
+    return normalizeMenuItems(parsed);
   } catch (error) {
-    return defaultMenuItems;
+    return defaultMenuItems.map((item) => ({
+      ...item,
+      img: resolveMenuImage(item.img),
+    }));
   }
 }
 
@@ -263,7 +342,7 @@ function renderMenu(items) {
         </span>
         ${item.prepEstimate <= 10 ? '<span class="badge fast">በፍጥነት የሚደርስ</span>' : ""}
       </div>
-      <img src="${item.img}" alt="${item.name}" class="h-48 w-full object-cover rounded-t-lg mb-4" loading="lazy" />
+      <img src="${item.img}" alt="${item.name}" class="h-48 w-full object-cover rounded-t-lg mb-4" loading="lazy" onerror="this.onerror=null;this.src='foodimage/images.jpg';" />
       <h3 class="text-lg font-bold">${item.name}</h3>
       <p class="text-sm text-slate-500">${item.category}</p>
       <div class="rating-row">
@@ -357,7 +436,7 @@ function renderCart() {
           : "";
       return `
         <div class="cart-item">
-          <img src="${item.img}" alt="${item.name}" />
+          <img src="${item.img}" alt="${item.name}" onerror="this.onerror=null;this.src='foodimage/images.jpg';" />
           <div class="flex-1">
             <div class="flex items-start justify-between gap-2">
               <div>
@@ -517,14 +596,16 @@ function saveCustomerOrder(order) {
 
 function showOrderSuccess(order) {
   const modal = document.getElementById("order-success-modal");
-  document.getElementById("success-order-number").textContent = `#${order.number}`;
+  document.getElementById("success-order-number").textContent =
+    `#${order.number}`;
   document.getElementById("success-order-items").innerHTML = order.items
     .map(
       (it) =>
         `<li class="flex items-center justify-between gap-2"><span>${it.name} × ${it.quantity}</span><span>${it.price * it.quantity} ብር</span></li>`,
     )
     .join("");
-  document.getElementById("success-order-total").textContent = `${order.payable} ብር`;
+  document.getElementById("success-order-total").textContent =
+    `${order.payable} ብር`;
   document.getElementById("success-delivery-time").textContent =
     `${order.estimatedMinutes} ደቂቃ`;
   modal.classList.add("open");
@@ -1110,7 +1191,9 @@ function renderReviewModeration() {
       <div class="review-card-header">
         <strong>${itemName}</strong>
         <span class="badge-status ${
-          isApproved ? "bg-emerald-100 text-emerald-800" : "bg-amber-100 text-amber-800"
+          isApproved
+            ? "bg-emerald-100 text-emerald-800"
+            : "bg-amber-100 text-amber-800"
         }">${isApproved ? "Approved" : "Pending"}</span>
       </div>
       <p class="review-card-meta">${review.name} · ${review.rating} ★</p>
