@@ -7,6 +7,8 @@ const STORAGE_KEYS = {
   incomingOrders: "incoming_orders",
   menu: "restaurant-menu",
   language: "restaurant-language",
+  customerProfile: "restaurant-customer-profile",
+  table: "restaurant-table-selection",
 };
 
 const ADMIN_PASSWORD = "AdminPass2026";
@@ -252,7 +254,7 @@ const defaultMenuItems = [
     costPrice: 45,
     stock: 10,
     prepEstimate: 5,
-    img: "image/juce.jpg",
+    img: "image/",
   },
   {
     id: 15,
@@ -518,7 +520,7 @@ function renderMenu(items) {
         ${item.prepEstimate <= 10 ? '<span class="badge fast">' + (currentLanguage === "am" ? "በፍጥነት የሚደርስ" : "Fast delivery") + "</span>" : ""}
       </div>
       <div class="menu-image-wrap">
-        <img src="${item.img}" alt="${item.name}" class="h-48 w-full object-cover rounded-t-lg mb-4" loading="lazy" onerror="this.onerror=null;this.src='foodimage/images.jpg';" />
+        <img src="${item.img}" alt="${item.name}" class="w-full rounded-t-lg" loading="lazy" onerror="this.onerror=null;this.src='foodimage/images.jpg';" />
         <button type="button" class="favorite-btn ${isFavorite ? "active" : ""}" data-action="toggle-favorite" data-id="${item.id}" aria-label="toggle favorite">${isFavorite ? "❤️" : "🤍"}</button>
       </div>
       <h3 class="text-lg font-bold">${item.name}</h3>
@@ -660,6 +662,28 @@ function closeCart() {
   document.getElementById("cart-drawer").classList.remove("open");
 }
 
+function getCartSummary() {
+  const subtotal = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0,
+  );
+  const promoCode =
+    document.getElementById("promo-code")?.value.trim().toUpperCase() || "";
+  const validPromo = promoCode === "STUDENT10";
+  const discountRate = validPromo ? 0.1 : 0;
+  const discountAmount = Math.round(subtotal * discountRate);
+  const total = Math.max(0, subtotal - discountAmount);
+
+  return {
+    subtotal,
+    discountRate,
+    discountAmount,
+    total,
+    validPromo,
+    promoCode,
+  };
+}
+
 function renderCart() {
   const container = document.getElementById("cart-items");
   const promoInput = document.getElementById("promo-code");
@@ -682,25 +706,29 @@ function renderCart() {
   }
 
   if (!cart.length) {
-    container.innerHTML = `<p class="text-center text-slate-500">${getLanguageText("cartEmpty")}</p>`;
-    document.getElementById("cart-total").textContent =
-      `0 ${currentLanguage === "am" ? "ብር" : "Birr"}`;
-    document.getElementById("discounted-total").textContent =
-      `0 ${currentLanguage === "am" ? "ብር" : "Birr"}`;
-    document.getElementById("promo-message").textContent =
-      getLanguageText("promoHint");
-    document.getElementById("promo-message").className = "promo-message";
+    if (container) {
+      container.innerHTML = `<p class="text-center text-slate-500">${getLanguageText("cartEmpty")}</p>`;
+    }
+    const currency = currentLanguage === "am" ? "ብር" : "Birr";
+    const totalNode = document.getElementById("cart-total");
+    const discountedNode = document.getElementById("discounted-total");
+    if (totalNode) totalNode.textContent = `0 ${currency}`;
+    if (discountedNode) discountedNode.textContent = `0 ${currency}`;
+    const promoMessage = document.getElementById("promo-message");
+    if (promoMessage) {
+      promoMessage.textContent = getLanguageText("promoHint");
+      promoMessage.className = "promo-message";
+    }
     updateCartBadge();
     return;
   }
 
   container.innerHTML = cart
     .map((item) => {
+      const menuItem = menuItems.find((menuItem) => menuItem.id === item.id);
+      const stockAvailable = menuItem ? menuItem.stock : 0;
       const outOfStockLabel =
-        item.quantity >
-        (menuItems.find((menuItem) => menuItem.id === item.id)?.stock || 0)
-          ? " (limited stock)"
-          : "";
+        item.quantity > stockAvailable ? " (limited stock)" : "";
       return `
         <div class="cart-item">
           <img src="${item.img}" alt="${item.name}" onerror="this.onerror=null;this.src='foodimage/images.jpg';" />
@@ -726,22 +754,25 @@ function renderCart() {
     })
     .join("");
 
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const validPromo = promoCode === "STUDENT10";
-  const discount = validPromo ? 0.1 : 0;
-  const discountedTotal = Math.round(total * (1 - discount));
+  const { subtotal, discountAmount, total, validPromo } = getCartSummary();
+  const currency = currentLanguage === "am" ? "ብር" : "Birr";
 
-  document.getElementById("cart-total").textContent =
-    `${total} ${currentLanguage === "am" ? "ብር" : "Birr"}`;
-  document.getElementById("discounted-total").textContent =
-    `${discountedTotal} ${currentLanguage === "am" ? "ብር" : "Birr"}`;
-  document.getElementById("promo-message").textContent = promoCode
-    ? validPromo
-      ? getLanguageText("discountApplied")
-      : getLanguageText("invalidPromo")
-    : getLanguageText("promoHint");
-  document.getElementById("promo-message").className =
-    `promo-message ${validPromo ? "success" : promoCode ? "error" : ""}`;
+  const totalNode = document.getElementById("cart-total");
+  const discountedNode = document.getElementById("discounted-total");
+  const promoMessage = document.getElementById("promo-message");
+
+  if (totalNode) totalNode.textContent = `${subtotal} ${currency}`;
+  if (discountedNode) discountedNode.textContent = `${total} ${currency}`;
+
+  if (promoMessage) {
+    promoMessage.textContent = promoCode
+      ? validPromo
+        ? getLanguageText("discountApplied")
+        : getLanguageText("invalidPromo")
+      : getLanguageText("promoHint");
+    promoMessage.className = `promo-message ${validPromo ? "success" : promoCode ? "error" : ""}`;
+  }
+
   updateCartBadge();
 }
 
@@ -863,6 +894,154 @@ function saveCustomerOrder(order) {
   localStorage.setItem(STORAGE_KEYS.customerOrder, JSON.stringify(order));
 }
 
+function getTableLabel(value) {
+  if (!value || value === "takeaway") return "Takeaway";
+  return `Table ${value}`;
+}
+
+function loadCustomerProfile() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEYS.customerProfile);
+    const parsed = saved ? JSON.parse(saved) : null;
+    return {
+      name: parsed?.name || "",
+      phone: parsed?.phone || "",
+      loyaltyPoints: Number(parsed?.loyaltyPoints || 0),
+      lastOrder: parsed?.lastOrder || null,
+      orderHistory: Array.isArray(parsed?.orderHistory)
+        ? parsed.orderHistory
+        : [],
+    };
+  } catch (error) {
+    return {
+      name: "",
+      phone: "",
+      loyaltyPoints: 0,
+      lastOrder: null,
+      orderHistory: [],
+    };
+  }
+}
+
+function saveCustomerProfile(profile) {
+  localStorage.setItem(STORAGE_KEYS.customerProfile, JSON.stringify(profile));
+}
+
+function refreshCustomerProfilePanel() {
+  const profile = loadCustomerProfile();
+  const summary = document.getElementById("customer-profile-summary");
+  const pointsField = document.getElementById("customer-loyalty-points");
+  if (pointsField) {
+    pointsField.textContent = `${profile.loyaltyPoints || 0} pts`;
+  }
+  if (summary) {
+    if (profile.name || profile.phone) {
+      summary.textContent = `${profile.name || "Customer"} • ${profile.phone || "No phone"}`;
+    } else {
+      summary.textContent =
+        "No saved profile yet. Complete checkout to unlock loyalty rewards.";
+    }
+  }
+  const reorderButton = document.getElementById("reorder-last-btn");
+  if (reorderButton) {
+    reorderButton.disabled =
+      !profile.lastOrder || !profile.lastOrder.items?.length;
+    reorderButton.title = reorderButton.disabled
+      ? "No previous order to repeat"
+      : "Re-order your last meal";
+  }
+}
+
+function syncCustomerProfile(order) {
+  const profile = loadCustomerProfile();
+  const name = order.customer.name || profile.name || "";
+  const phone = order.customer.phone || profile.phone || "";
+  const pointsEarned = Math.max(10, Math.round(order.payable / 10));
+
+  profile.name = name;
+  profile.phone = phone;
+  profile.loyaltyPoints = (Number(profile.loyaltyPoints) || 0) + pointsEarned;
+  profile.lastOrder = {
+    id: order.id,
+    number: order.number,
+    tableNumber: order.tableNumber || "takeaway",
+    status: order.status,
+    items: order.items.map((item) => ({ ...item })),
+    payable: order.payable,
+    createdAt: order.createdAt,
+  };
+
+  profile.orderHistory = [
+    profile.lastOrder,
+    ...profile.orderHistory.filter((entry) => entry.id !== order.id),
+  ].slice(0, 5);
+
+  saveCustomerProfile(profile);
+  refreshCustomerProfilePanel();
+}
+
+function applySavedCustomerInfo() {
+  const profile = loadCustomerProfile();
+  const nameField = document.getElementById("checkout-name");
+  const phoneField = document.getElementById("checkout-phone");
+  if (nameField && profile.name) nameField.value = profile.name;
+  if (phoneField && profile.phone) phoneField.value = profile.phone;
+}
+
+function reOrderLastMeal() {
+  const profile = loadCustomerProfile();
+  if (!profile.lastOrder || !profile.lastOrder.items?.length) {
+    showToast("No previous order found to re-order.");
+    return;
+  }
+
+  cart = profile.lastOrder.items.map((item) => ({ ...item }));
+  saveCart();
+  renderCart();
+  closeCheckoutModal();
+  openCart();
+  showToast("Your last order was added back to the cart.");
+}
+
+function triggerKitchenAlert() {
+  const panel = document.getElementById("admin-panel");
+  if (panel) {
+    panel.classList.remove("flash-order");
+    void panel.offsetWidth;
+    panel.classList.add("flash-order");
+    setTimeout(() => panel.classList.remove("flash-order"), 1800);
+  }
+
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    const audioContext = new AudioCtx();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    oscillator.type = "sine";
+    oscillator.frequency.setValueAtTime(880, audioContext.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(
+      1320,
+      audioContext.currentTime + 0.18,
+    );
+    gainNode.gain.setValueAtTime(0.0001, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(
+      0.18,
+      audioContext.currentTime + 0.02,
+    );
+    gainNode.gain.exponentialRampToValueAtTime(
+      0.0001,
+      audioContext.currentTime + 0.42,
+    );
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    oscillator.start();
+    oscillator.stop(audioContext.currentTime + 0.45);
+  } catch (error) {
+    console.warn("Kitchen alert audio failed:", error);
+  }
+}
+
 function showOrderSuccess(order) {
   const modal = document.getElementById("order-success-modal");
   document.getElementById("success-order-number").textContent =
@@ -874,9 +1053,9 @@ function showOrderSuccess(order) {
     )
     .join("");
   document.getElementById("success-order-total").textContent =
-    `${order.payable} ብር`;
+    `${order.payable}`;
   document.getElementById("success-delivery-time").textContent =
-    `${order.estimatedMinutes} ደቂቃ`;
+    `${order.estimatedMinutes}`;
   modal.classList.add("open");
   renderOrdersSidebar(order);
   startOrderCountdown(order);
@@ -951,6 +1130,28 @@ function sendReadyNotification(order) {
   showToast(`Order ${order.number} is ready!`);
 }
 
+function updateDeliveryProgress(
+  remainingSeconds,
+  totalSeconds,
+  barId = "delivery-progress-bar",
+  labelId = "delivery-progress-label",
+) {
+  const bar = document.getElementById(barId);
+  const label = document.getElementById(labelId);
+  if (!bar && !label) return;
+
+  const percentage =
+    totalSeconds > 0
+      ? Math.min(
+          100,
+          Math.max(0, ((totalSeconds - remainingSeconds) / totalSeconds) * 100),
+        )
+      : 0;
+
+  if (bar) bar.style.width = `${percentage}%`;
+  if (label) label.textContent = `${Math.round(percentage)}%`;
+}
+
 function startOrderCountdown(order) {
   if (!order) return;
   activeOrderId = order.id;
@@ -963,6 +1164,18 @@ function startOrderCountdown(order) {
   countdownStartedAt = Date.now();
 
   updateOrderStatusCard(order);
+  updateDeliveryProgress(
+    currentCountdownSeconds,
+    totalSeconds,
+    "delivery-progress-bar",
+    "delivery-progress-label",
+  );
+  updateDeliveryProgress(
+    currentCountdownSeconds,
+    totalSeconds,
+    "success-delivery-progress-bar",
+    "success-delivery-progress-label",
+  );
 
   if (countdownTimer) clearInterval(countdownTimer);
   countdownTimer = setInterval(() => updateCountdown(order.id), 1000);
@@ -983,6 +1196,7 @@ function updateCountdown(orderId) {
   const remaining = Math.max(0, currentCountdownSeconds - elapsed);
   const minutes = Math.floor(remaining / 60);
   const seconds = remaining % 60;
+  const totalSeconds = Math.max(60, order.estimatedMinutes * 60);
 
   const countdownText = document.getElementById("success-countdown-text");
   if (countdownText)
@@ -995,6 +1209,25 @@ function updateCountdown(orderId) {
     sidebarCountdown.textContent = `${String(minutes).padStart(2, "0")}:${String(
       seconds,
     ).padStart(2, "0")}`;
+
+  const statusText = document.getElementById("countdown-text");
+  if (statusText)
+    statusText.textContent = `${String(minutes).padStart(2, "0")}:${String(
+      seconds,
+    ).padStart(2, "0")}`;
+
+  updateDeliveryProgress(
+    remaining,
+    totalSeconds,
+    "delivery-progress-bar",
+    "delivery-progress-label",
+  );
+  updateDeliveryProgress(
+    remaining,
+    totalSeconds,
+    "success-delivery-progress-bar",
+    "success-delivery-progress-label",
+  );
 
   if (remaining === 0) {
     clearInterval(countdownTimer);
@@ -1118,8 +1351,11 @@ function generateMenuQrCode() {
   const qrImage = document.getElementById("qr-code-image");
   if (!qrImage) return;
 
-  const menuUrl = window.location.href;
-  const qrTarget = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(menuUrl)}&size=300x300`;
+  const tableSelect = document.getElementById("checkout-table");
+  const selectedTable = tableSelect ? tableSelect.value : "1";
+  const currentUrl = new URL(window.location.href);
+  currentUrl.searchParams.set("table", selectedTable);
+  const qrTarget = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(currentUrl.toString())}&size=300x300`;
   qrImage.src = qrTarget;
   document.getElementById("qr-modal").classList.add("open");
 }
@@ -1174,7 +1410,30 @@ function closeCheckoutModal() {
   document.getElementById("checkout-modal").classList.remove("open");
 }
 
-function sendOrderToTelegram() {
+async function sendOrderNotifications(order) {
+  try {
+    const response = await fetch("/api/notify-order", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(order),
+    });
+
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+      throw new Error(data.message || "Notification request failed");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Order notifications failed:", error);
+    return null;
+  }
+}
+
+async function sendOrderToTelegram() {
   if (!cart.length) {
     showToast("Your cart is empty.");
     return;
@@ -1188,11 +1447,15 @@ function sendOrderToTelegram() {
   const name = document.getElementById("checkout-name")?.value.trim();
   const phone = document.getElementById("checkout-phone")?.value.trim();
   const address = document.getElementById("checkout-address")?.value.trim();
+  const tableSelection =
+    document.getElementById("checkout-table")?.value || "takeaway";
   const promoCode =
     document.getElementById("promo-code")?.value.trim().toUpperCase() || "";
   const paymentSelection =
     document.querySelector('input[name="payment-method"]:checked')?.value ||
     "Cash on Delivery";
+
+  const tableLabel = getTableLabel(tableSelection);
 
   if (!name || !phone || !address) {
     button.disabled = false;
@@ -1220,7 +1483,14 @@ function sendOrderToTelegram() {
   const order = {
     id: Date.now(),
     number: orders.length + 1,
-    customer: { name, phone, address, paymentMethod: paymentSelection },
+    customer: {
+      name,
+      phone,
+      address,
+      paymentMethod: paymentSelection,
+      tableNumber: tableSelection,
+      tableLabel,
+    },
     items: cart.map((item) => ({ ...item })),
     status: "Preparing",
     queuePosition,
@@ -1229,6 +1499,8 @@ function sendOrderToTelegram() {
     payable: discountedTotal,
     estimatedMinutes,
     deliveryTime: `${estimatedMinutes} ደቂቃ`,
+    tableNumber: tableSelection,
+    tableLabel,
     createdAt: Date.now(),
     readyAt: null,
   };
@@ -1252,16 +1524,21 @@ function sendOrderToTelegram() {
   refreshOrderQueuePositions();
   updateAdminPanel();
   saveCustomerOrder(order);
+  syncCustomerProfile(order);
   closeCheckoutModal();
   showToast("Order placed and kitchen notified!");
+  triggerKitchenAlert();
   showOrderSuccess(order);
+
+  await sendOrderNotifications(order);
 
   const message = [
     "New Order",
     `Customer: ${name}`,
     `Phone: ${phone}`,
     `Payment: ${paymentSelection}`,
-    `Table / Address: ${address}`,
+    `Table: ${tableLabel}`,
+    `Address: ${address}`,
     "",
     "Items:",
     itemsSummary,
@@ -1289,16 +1566,20 @@ function loadTheme() {
       : "light");
   document.body.setAttribute("data-theme", preferredTheme);
   const button = document.getElementById("theme-toggle");
-  button.textContent = preferredTheme === "dark" ? "☀️ Light" : "🌙 Dark";
+  if (button) {
+    button.textContent = preferredTheme === "dark" ? "☀️ Light" : "🌙 Dark";
+  }
 }
 
 function toggleTheme() {
-  const currentTheme =
+  const nextTheme =
     document.body.getAttribute("data-theme") === "dark" ? "light" : "dark";
-  document.body.setAttribute("data-theme", currentTheme);
-  localStorage.setItem(STORAGE_KEYS.theme, currentTheme);
-  document.getElementById("theme-toggle").textContent =
-    currentTheme === "dark" ? "☀️ Light" : "🌙 Dark";
+  document.body.setAttribute("data-theme", nextTheme);
+  localStorage.setItem(STORAGE_KEYS.theme, nextTheme);
+  const button = document.getElementById("theme-toggle");
+  if (button) {
+    button.textContent = nextTheme === "dark" ? "☀️ Light" : "🌙 Dark";
+  }
 }
 
 function getSalesSummary() {
@@ -1817,6 +2098,39 @@ function simulateActiveUsers() {
   if (activeUsersNode) activeUsersNode.textContent = activeUsers;
 }
 
+function syncSelectedTableFromUrl() {
+  const search = new URLSearchParams(window.location.search);
+  const tableValue = search.get("table");
+  const tableFilter = document.getElementById("checkout-table");
+  if (!tableFilter) return;
+  if (
+    tableValue &&
+    ["takeaway", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"].includes(
+      tableValue,
+    )
+  ) {
+    tableFilter.value = tableValue;
+  } else {
+    tableFilter.value = "1";
+  }
+  localStorage.setItem(STORAGE_KEYS.table, tableFilter.value);
+}
+
+function configurePaymentOptions() {
+  const radios = document.querySelectorAll('input[name="payment-method"]');
+  const confirmation = document.getElementById("payment-confirmation");
+  radios.forEach((radio) => {
+    radio.addEventListener("change", () => {
+      if (radio.value === "Cash on Delivery") {
+        confirmation.textContent =
+          "Cash on delivery selected. Please keep the exact amount ready for handoff.";
+        return;
+      }
+      confirmation.textContent = `${radio.value} selected. Automated transaction confirmation is enabled for this order.`;
+    });
+  });
+}
+
 window.addEventListener("DOMContentLoaded", () => {
   loadTheme();
   applyLanguageTranslations();
@@ -1827,6 +2141,10 @@ window.addEventListener("DOMContentLoaded", () => {
   updateAdminPanel();
   renderOrdersSidebar();
   resumeCustomerOrder();
+  refreshCustomerProfilePanel();
+  applySavedCustomerInfo();
+  syncSelectedTableFromUrl();
+  configurePaymentOptions();
 
   if ("Notification" in window && Notification.permission === "default") {
     Notification.requestPermission().catch(() => {});
@@ -1917,6 +2235,9 @@ window.addEventListener("DOMContentLoaded", () => {
   document
     .getElementById("send-telegram-btn")
     .addEventListener("click", sendOrderToTelegram);
+  document
+    .getElementById("reorder-last-btn")
+    .addEventListener("click", reOrderLastMeal);
   document
     .getElementById("theme-toggle")
     .addEventListener("click", toggleTheme);

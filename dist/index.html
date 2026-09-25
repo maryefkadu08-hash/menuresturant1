@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Habesha Gourmet Bistro | ሙሉ ሜኑ</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script type="module" crossorigin src="./assets/index-b-86E6QQ.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-DTBqPKFV.css">
+    <script type="module" crossorigin src="./assets/index-BvUgpXJd.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-Cs2lHruW.css">
   </head>
   <body
     class="min-h-screen bg-slate-50 text-slate-900 pb-20 transition-colors duration-300"
@@ -356,7 +356,7 @@
     <button
       id="cart-toggle"
       type="button"
-      class="floating-cart fixed bottom-6 right-6 rounded-full bg-emerald-600 p-4 text-white shadow-2xl"
+      class="floating-cart fixed bottom-5 right-5 rounded-full p-4 text-white shadow-2xl"
     >
       🛒 <span id="cart-count">0</span>
     </button>
@@ -403,9 +403,35 @@
           <span id="discounted-total">0 ብር</span>
         </div>
 
+        <div class="customer-profile-card">
+          <div class="flex items-center justify-between gap-2">
+            <div>
+              <p class="customer-profile-label">Customer Profile</p>
+              <p id="customer-profile-summary" class="customer-profile-summary">
+                No saved profile yet.
+              </p>
+            </div>
+            <div class="customer-points-badge">
+              <span id="customer-loyalty-points">0 pts</span>
+            </div>
+          </div>
+          <button id="reorder-last-btn" type="button" class="reorder-button">
+            Re-order Last Meal
+          </button>
+        </div>
+
         <div id="order-status-card" class="order-status-card hidden">
           <div class="status-badge">Preparing</div>
           <div id="prep-time-text" class="mt-2 text-sm"></div>
+          <div class="delivery-progress mt-3">
+            <div id="delivery-progress-bar" class="delivery-progress-bar"></div>
+          </div>
+          <div
+            class="mt-2 flex items-center justify-between text-xs uppercase tracking-wide text-slate-500"
+          >
+            <span>ETA</span>
+            <span id="delivery-progress-label">0%</span>
+          </div>
           <div id="countdown-text" class="mt-1 text-xl font-bold"></div>
         </div>
 
@@ -465,6 +491,24 @@
             />
           </label>
 
+          <label class="block text-sm font-medium">
+            <span class="mb-1 block">Table / Dining Option</span>
+            <select
+              id="checkout-table"
+              class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 outline-none"
+            >
+              <option value="1">Table 1</option>
+              <option value="2">Table 2</option>
+              <option value="3">Table 3</option>
+              <option value="4">Table 4</option>
+              <option value="5">Table 5</option>
+              <option value="6">Table 6</option>
+              <option value="7">Table 7</option>
+              <option value="8">Table 8</option>
+              <option value="takeaway">Takeaway</option>
+            </select>
+          </label>
+
           <div class="payment-options">
             <p class="payment-title">Payment Method</p>
             <label class="payment-option">
@@ -488,6 +532,10 @@
               />
               <span>💵 Cash on Delivery</span>
             </label>
+            <p id="payment-confirmation" class="payment-confirmation">
+              TeleBirr selected. Automated transaction confirmation is enabled
+              for this order.
+            </p>
           </div>
         </form>
         <div class="flex gap-3 border-t border-slate-200 p-5">
@@ -626,6 +674,18 @@
               በዝግጅት ላይ
             </div>
             <div id="success-prep-text" class="mt-2 text-sm"></div>
+            <div class="delivery-progress mt-3">
+              <div
+                id="success-delivery-progress-bar"
+                class="delivery-progress-bar"
+              ></div>
+            </div>
+            <div
+              class="mt-2 flex items-center justify-between text-xs uppercase tracking-wide text-slate-500"
+            >
+              <span>Delivery</span>
+              <span id="success-delivery-progress-label">0%</span>
+            </div>
             <div
               id="success-countdown-text"
               class="mt-1 text-xl font-bold"
