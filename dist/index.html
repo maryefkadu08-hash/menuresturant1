@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Habesha Gourmet Bistro | ሙሉ ሜኑ</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script type="module" crossorigin src="./assets/index-BvUgpXJd.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-Cs2lHruW.css">
+    <script type="module" crossorigin src="./assets/index-8gZzsme-.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-Cs2lHruW.css" />
   </head>
   <body
     class="min-h-screen bg-slate-50 text-slate-900 pb-20 transition-colors duration-300"
@@ -32,7 +32,7 @@
           class="flex flex-wrap items-center justify-center gap-2 sm:justify-end"
         >
           <a
-            href="tel:+251927146888"
+            href="tel:+251957862470"
             class="quick-action rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-semibold shadow-sm"
           >
             📞 ይደውሉ
@@ -476,6 +476,9 @@
               id="checkout-phone"
               type="tel"
               name="phone"
+              pattern="(?:\+251|0)?9[0-9]{8}"
+              maxlength="13"
+              title="Enter a valid Ethiopian mobile number."
               required
               class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 outline-none"
             />
@@ -696,6 +699,5 @@
     </div>
 
     <div id="toast-container" class="toast-container" aria-live="polite"></div>
-
   </body>
 </html>

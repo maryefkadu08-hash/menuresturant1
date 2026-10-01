@@ -1,38 +1,20 @@
-# 🍽️ Restaurant Menu & Ordering Web App
+# Habesha Restaurant Menu
 
-A responsive web application that displays menu items categorized for customers, allows them to add items to a shopping cart, and seamlessly processes orders.
+A responsive menu and ordering app built with Vite, browser JavaScript, and an Express API. Orders are persisted in the browser and can be sent to Telegram; optional SMS delivery uses Twilio.
 
----
+## Local Setup
 
-## 🚀 Key Features
+1. Install dependencies with `npm install`.
+2. Copy `.env.example` to `.env` and set `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` for Telegram notifications. The optional Twilio variables enable SMS.
+3. Run `npm start` and open `http://localhost:3000`. This starts the app and its `/api/notify-order` endpoint together.
+4. Run `npm run build` to verify the production frontend bundle.
 
-- **Dynamic Category Filtering:** Filter menu items easily by categories (e.g., Fasting, Non-Fasting, Drinks).
-- **Interactive Cart System:** Add, adjust quantities, or remove items from the shopping cart.
-- **Local Storage Persistence:** Cart data is saved locally so items aren't lost when refreshing the page.
-- **Telegram Order Integration:** Routes completed orders directly to an admin Telegram Bot/Group.
-- **Fully Responsive UI:** Optimized layout for mobile, tablet, and desktop screens.
+Do not put bot credentials in browser variables such as `VITE_*` or `REACT_APP_*`; all notification secrets are read by the server. `.env` is ignored by Git.
 
----
+## Project Structure
 
-## 🛠️ Tech Stack
-
-- **Frontend:** HTML5, Custom CSS / Tailwind CSS
-- **Logic & Interaction:** JavaScript (ES6+)
-- **State Management:** Browser LocalStorage
-- **Notifications/Routing:** Telegram Bot API
-
----
-
-## 📁 Project Structure
-
-```text
-food/
-├── image/                     # Food images
-├── restaurant_menu_app.html   # Main HTML page
-├── styles.css                 # Custom styles
-├── script.js                  # Application logic and interactions
-└── README.md                  # Project documentation
-```
-
-👤 Author
-Marye Fikadu
+- `index.html`, `script.js`, `styles.css`: browser UI and interactions.
+- `utils/validation.js`: shared phone, sanitization, and order-payload validation.
+- `api/notify-order.js`: serverless notification handler used by Vercel and Express.
+- `server.js`: local Express server.
+- `foodimage/`, `image/`: menu and fallback images.

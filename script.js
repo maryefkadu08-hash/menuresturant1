@@ -1,3 +1,5 @@
+import { isValidEthiopianPhone, sanitizeText } from "./utils/validation.js";
+
 const STORAGE_KEYS = {
   cart: "restaurant-cart",
   theme: "restaurant-theme",
@@ -284,6 +286,8 @@ let orders = loadOrders();
 let incomingOrders = loadIncomingOrders();
 let activeCategory = "All";
 let searchQuery = "";
+let filteredMenuCacheKey = null;
+let filteredMenuCacheItems = [];
 let reviews = loadReviews();
 let reviewTargetId = null;
 let reviewRating = 0;
@@ -383,7 +387,8 @@ function saveMenuItems() {
 function loadCart() {
   try {
     const saved = localStorage.getItem(STORAGE_KEYS.cart);
-    return saved ? JSON.parse(saved) : [];
+    const parsed = saved ? JSON.parse(saved) : [];
+    return Array.isArray(parsed) ? parsed : [];
   } catch (error) {
     return [];
   }
@@ -456,6 +461,9 @@ function refreshOrderQueuePositions() {
 }
 
 function getFilteredItems() {
+  const cacheKey = `${activeCategory}|${searchQuery.toLowerCase()}|${menuSort}`;
+  if (cacheKey === filteredMenuCacheKey) return filteredMenuCacheItems;
+
   let filtered = menuItems.filter((item) => {
     const matchesCategory =
       activeCategory === "All" || item.category === activeCategory;
@@ -471,7 +479,9 @@ function getFilteredItems() {
     filtered = [...filtered].sort((a, b) => b.price - a.price);
   }
 
-  return filtered;
+  filteredMenuCacheKey = cacheKey;
+  filteredMenuCacheItems = filtered;
+  return filteredMenuCacheItems;
 }
 
 function getLanguageText(key) {
@@ -520,7 +530,7 @@ function renderMenu(items) {
         ${item.prepEstimate <= 10 ? '<span class="badge fast">' + (currentLanguage === "am" ? "በፍጥነት የሚደርስ" : "Fast delivery") + "</span>" : ""}
       </div>
       <div class="menu-image-wrap">
-        <img src="${item.img}" alt="${item.name}" class="w-full rounded-t-lg" loading="lazy" onerror="this.onerror=null;this.src='foodimage/images.jpg';" />
+        <img src="${item.img}" alt="${item.name}" class="w-full rounded-t-lg" loading="lazy" onerror="this.onerror=null;this.src='${FALLBACK_IMAGE}';" />
         <button type="button" class="favorite-btn ${isFavorite ? "active" : ""}" data-action="toggle-favorite" data-id="${item.id}" aria-label="toggle favorite">${isFavorite ? "❤️" : "🤍"}</button>
       </div>
       <h3 class="text-lg font-bold">${item.name}</h3>
@@ -731,7 +741,7 @@ function renderCart() {
         item.quantity > stockAvailable ? " (limited stock)" : "";
       return `
         <div class="cart-item">
-          <img src="${item.img}" alt="${item.name}" onerror="this.onerror=null;this.src='foodimage/images.jpg';" />
+          <img src="${item.img}" alt="${item.name}" onerror="this.onerror=null;this.src='${FALLBACK_IMAGE}';" />
           <div class="flex-1">
             <div class="flex items-start justify-between gap-2">
               <div>
@@ -1444,9 +1454,15 @@ async function sendOrderToTelegram() {
   button.disabled = true;
   button.innerHTML = '<span class="loading-spinner"></span> Processing...';
 
-  const name = document.getElementById("checkout-name")?.value.trim();
-  const phone = document.getElementById("checkout-phone")?.value.trim();
-  const address = document.getElementById("checkout-address")?.value.trim();
+  const name = sanitizeText(
+    document.getElementById("checkout-name")?.value,
+    100,
+  );
+  const phone = document.getElementById("checkout-phone")?.value.trim() || "";
+  const address = sanitizeText(
+    document.getElementById("checkout-address")?.value,
+    250,
+  );
   const tableSelection =
     document.getElementById("checkout-table")?.value || "takeaway";
   const promoCode =
@@ -1457,14 +1473,22 @@ async function sendOrderToTelegram() {
 
   const tableLabel = getTableLabel(tableSelection);
 
-  if (!name || !phone || !address) {
+  if (!name || !address || !isValidEthiopianPhone(phone)) {
     button.disabled = false;
     button.innerHTML = originalText;
-    showToast("Please fill in name, phone, and address.");
+    showToast(
+      !name || !address
+        ? "Please fill in name, phone, and address."
+        : "Please enter a valid Ethiopian phone number.",
+    );
     return;
   }
 
-  const itemsSummary = cart
+  const safeItems = cart.map((item) => ({
+    ...item,
+    name: sanitizeText(item.name, 100),
+  }));
+  const itemsSummary = safeItems
     .map(
       (item) =>
         `- ${item.name} × ${item.quantity} = ${item.price * item.quantity} ብር`,
@@ -1491,7 +1515,7 @@ async function sendOrderToTelegram() {
       tableNumber: tableSelection,
       tableLabel,
     },
-    items: cart.map((item) => ({ ...item })),
+    items: safeItems,
     status: "Preparing",
     queuePosition,
     total,
@@ -1526,11 +1550,16 @@ async function sendOrderToTelegram() {
   saveCustomerOrder(order);
   syncCustomerProfile(order);
   closeCheckoutModal();
-  showToast("Order placed and kitchen notified!");
+  showToast("Order placed successfully.");
   triggerKitchenAlert();
   showOrderSuccess(order);
 
-  await sendOrderNotifications(order);
+  const notification = await sendOrderNotifications(order);
+  if (notification) {
+    showToast("Order notification sent.");
+  } else {
+    showToast("Order saved, but notification could not be sent.");
+  }
 
   const message = [
     "New Order",
@@ -2019,6 +2048,7 @@ function handleAdminEvents(event) {
     if (!menuItem) return;
     menuItem.stock = Number(stockInput.value);
     menuItem.price = Number(priceInput.value);
+    filteredMenuCacheKey = null;
     menuItem.costPrice = Number(costInput.value);
     saveMenuItems();
     renderMenu(getFilteredItems());
